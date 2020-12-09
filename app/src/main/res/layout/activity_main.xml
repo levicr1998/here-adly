@@ -4,12 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.here.hellomap.MainActivity">
+    tools:context="com.here.adly.MainActivity">
 
     <com.here.sdk.mapview.MapView
         android:id="@+id/map_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/text_view_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="#000000" />
     </com.here.sdk.mapview.MapView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -17,16 +17,24 @@
  * License-Filename: LICENSE
  */
 
-package com.here.hellomap;
+package com.here.adly;
 
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.here.hellomap.PermissionsRequestor.ResultListener;
+import com.here.adly.PermissionsRequestor.ResultListener;
 import com.here.sdk.core.Anchor2D;
 import com.here.sdk.core.GeoCoordinates;
 import com.here.sdk.core.Point2D;
@@ -48,11 +56,14 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     private PermissionsRequestor permissionsRequestor;
     private MapView mapView;
+    private TextView textViewResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        textViewResult = findViewById(R.id.text_view_result);
 
         // Get a MapView instance from the layout.
         mapView = findViewById(R.id.map_view);
@@ -66,6 +77,51 @@ public class MainActivity extends AppCompatActivity {
                 // Any code that requires map data may not work as expected beforehand.
                 Log.d(TAG, "HERE Rendering Engine attached.");
                 addMapMarker();
+
+                TokenInterceptor interceptor=new TokenInterceptor();
+
+                OkHttpClient client = new OkHttpClient.Builder()
+                        .addInterceptor(interceptor)
+            .build();
+
+                Retrofit retrofit = new Retrofit.Builder()
+                        .client(client)
+                        .baseUrl("https://xyz.api.here.com/hub/")
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+
+                JsonPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
+
+                Call <FeatureCollection> call = jsonPlaceHolderApi.getFeatures();
+                call.enqueue(new Callback<FeatureCollection>() {
+                    @Override
+                    public void onResponse(Call<FeatureCollection> call, Response<FeatureCollection> response) {
+                        if(!response.isSuccessful()){
+                            textViewResult.setText("Code: " + response.code());
+                            return;
+                        }
+                       FeatureCollection featureCollection = response.body();
+                        System.out.println();
+                /*        for (AdSpot adSpot :adSpots ) {
+
+                            content += "ID " + adSpot.getId() + "\n";
+                            content += "UserID " + adSpot.getUserId() + "\n";
+                            content += "Title " + adSpot.getTitle() + "\n";
+                            content += "Completed " + adSpot.isCompleted() + "\n";
+
+
+                        }
+
+*/
+                        String content = response.body().getType();
+                        textViewResult.append(content);
+                    }
+
+                    @Override
+                    public void onFailure(Call<FeatureCollection> call, Throwable t) {
+textViewResult.setText(t.getMessage());
+                    }
+                });
             }
         });
 
