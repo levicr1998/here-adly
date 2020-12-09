@@ -1,4 +1,4 @@
-package com.here.adly;
+package com.here.adly.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

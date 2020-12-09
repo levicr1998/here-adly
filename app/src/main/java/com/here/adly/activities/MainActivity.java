@@ -17,24 +17,27 @@
  * License-Filename: LICENSE
  */
 
-package com.here.adly;
+package com.here.adly.activities;
 
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.here.adly.PermissionsRequestor.ResultListener;
+import com.here.adly.models.Feature;
+import com.here.adly.services.APIServiceHERE;
+import com.here.adly.services.FeatureLocationCollectionManager;
+import com.here.adly.utils.MapMarkerPlacer;
+import com.here.adly.utils.PermissionsRequestor;
+import com.here.adly.R;
+import com.here.adly.models.FeatureCollection;
 import com.here.sdk.core.Anchor2D;
 import com.here.sdk.core.GeoCoordinates;
 import com.here.sdk.core.Point2D;
@@ -49,13 +52,18 @@ import com.here.sdk.mapview.MapView;
 import com.here.sdk.mapview.MapViewBase;
 import com.here.sdk.mapview.PickMapItemsResult;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private PermissionsRequestor permissionsRequestor;
+    private APIServiceHERE apiServiceHERE;
+    private FeatureLocationCollectionManager featureLocationCollectionManager;
+    private MapMarkerPlacer mapMarkerPlacer;
     private MapView mapView;
+    private List<Feature> features = new ArrayList<>();
     private TextView textViewResult;
 
     @Override
@@ -68,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
         // Get a MapView instance from the layout.
         mapView = findViewById(R.id.map_view);
         mapView.onCreate(savedInstanceState);
+        featureLocationCollectionManager = new FeatureLocationCollectionManager();
+        this.getFeatures();
 
         mapView.setOnReadyListener(new MapView.OnReadyListener() {
             @Override
@@ -76,61 +86,40 @@ public class MainActivity extends AppCompatActivity {
                 // It will not be called before the first map scene was loaded.
                 // Any code that requires map data may not work as expected beforehand.
                 Log.d(TAG, "HERE Rendering Engine attached.");
-                addMapMarker();
 
-                TokenInterceptor interceptor=new TokenInterceptor();
-
-                OkHttpClient client = new OkHttpClient.Builder()
-                        .addInterceptor(interceptor)
-            .build();
-
-                Retrofit retrofit = new Retrofit.Builder()
-                        .client(client)
-                        .baseUrl("https://xyz.api.here.com/hub/")
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
-
-                JsonPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
-
-                Call <FeatureCollection> call = jsonPlaceHolderApi.getFeatures();
-                call.enqueue(new Callback<FeatureCollection>() {
-                    @Override
-                    public void onResponse(Call<FeatureCollection> call, Response<FeatureCollection> response) {
-                        if(!response.isSuccessful()){
-                            textViewResult.setText("Code: " + response.code());
-                            return;
-                        }
-                       FeatureCollection featureCollection = response.body();
-                        System.out.println();
-                /*        for (AdSpot adSpot :adSpots ) {
-
-                            content += "ID " + adSpot.getId() + "\n";
-                            content += "UserID " + adSpot.getUserId() + "\n";
-                            content += "Title " + adSpot.getTitle() + "\n";
-                            content += "Completed " + adSpot.isCompleted() + "\n";
-
-
-                        }
-
-*/
-                        String content = response.body().getType();
-                        textViewResult.append(content);
-                    }
-
-                    @Override
-                    public void onFailure(Call<FeatureCollection> call, Throwable t) {
-textViewResult.setText(t.getMessage());
-                    }
-                });
             }
         });
 
         handleAndroidPermissions();
     }
 
+    private void getFeatures(){
+        apiServiceHERE = featureLocationCollectionManager.setupClient();
+        Call <FeatureCollection> call = apiServiceHERE.getFeatures();
+        call.enqueue(new Callback<FeatureCollection>() {
+            @Override
+            public void onResponse(Call<FeatureCollection> call, Response<FeatureCollection> response) {
+                if(!response.isSuccessful()){
+                    textViewResult.setText("Code: " + response.code());
+                }
+
+                FeatureCollection featureCollection = response.body();
+                features = featureCollection.getFeatures();
+                mapMarkerPlacer = new MapMarkerPlacer(MainActivity.this, mapView, features);
+                mapMarkerPlacer.placeMapMarkers();
+
+            }
+
+            @Override
+            public void onFailure(Call<FeatureCollection> call, Throwable t) {
+                textViewResult.setText(t.getMessage());
+            }
+        });
+    }
+
     private void handleAndroidPermissions() {
         permissionsRequestor = new PermissionsRequestor(this);
-        permissionsRequestor.request(new ResultListener(){
+        permissionsRequestor.request(new PermissionsRequestor.ResultListener(){
 
             @Override
             public void permissionsGranted() {
@@ -152,6 +141,7 @@ textViewResult.setText(t.getMessage());
 
     private void loadMapScene() {
         // Load a scene from the HERE SDK to render the map with a map scheme.
+
         mapView.getMapScene().loadScene(MapScheme.NORMAL_DAY, new MapScene.LoadSceneCallback() {
             @Override
             public void onLoadScene(@Nullable MapError mapError) {
@@ -159,20 +149,16 @@ textViewResult.setText(t.getMessage());
                     double distanceInMeters = 1000 * 10;
                     mapView.getCamera().lookAt(
                             new GeoCoordinates(51.44416,5.4788), distanceInMeters);
+
+
                 } else {
                     Log.d(TAG, "Loading map failed: mapError: " + mapError.name());
                 }
             }
         });
+
     }
 
-    public void addMapMarker(){
-        GeoCoordinates geoCoordinates = new GeoCoordinates(51.44416,5.4788);
-        Anchor2D anchor2D = new Anchor2D(0.5f, 1.0f);
-        MapImage mapImage = MapImageFactory.fromResource(this.getResources(), R.drawable.ad_picture);
-        MapMarker mapMarker = new MapMarker(geoCoordinates, mapImage, anchor2D);
-        mapView.getMapScene().addMapMarker(mapMarker);
-    }
 
     private void setTapGestureHandler() {
         mapView.getGestures().setTapListener(new TapListener() {

@@ -18,7 +18,7 @@
         <meta-data android:name="com.here.sdk.access_key_id" android:value="J29J8Q0uoD-k7MU2apR97w" />
         <meta-data android:name="com.here.sdk.access_key_secret" android:value="LoHc91DuOrc8AgeEQt4WZKAb4gpIOvXEy8wNE1RgP-dYYgedM_oWr2bs0I_GPuaroROgqSFKsUwIkNKXaH7wEA" />
 
-        <activity android:name="com.here.adly.MainActivity">
+        <activity android:name="com.here.adly.activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />

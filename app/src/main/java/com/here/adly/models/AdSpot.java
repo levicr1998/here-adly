@@ -1,4 +1,4 @@
-package com.here.adly;
+package com.here.adly.models;
 
 public class AdSpot {
 

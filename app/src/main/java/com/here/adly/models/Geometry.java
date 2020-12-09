@@ -1,18 +1,17 @@
-package com.here.adly;
+package com.here.adly.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class FeatureCollection {
-
+public class Geometry {
     @SerializedName("type")
     @Expose
     private String type;
-    @SerializedName("features")
+    @SerializedName("coordinates")
     @Expose
-    private List<Feature> features = null;
+    private List<Double> coordinates = null;
 
     public String getType() {
         return type;
@@ -22,11 +21,12 @@ public class FeatureCollection {
         this.type = type;
     }
 
-    public List<Feature> getFeatures() {
-        return features;
+    public List<Double> getCoordinates() {
+        return coordinates;
     }
 
-    public void setFeatures(List<Feature> features) {
-        this.features = features;
+    public void setCoordinates(List<Double> coordinates) {
+        this.coordinates = coordinates;
     }
+
 }

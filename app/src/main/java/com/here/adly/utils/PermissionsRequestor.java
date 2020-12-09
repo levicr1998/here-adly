@@ -17,7 +17,7 @@
  * License-Filename: LICENSE
  */
 
-package com.here.adly;
+package com.here.adly.utils;
 
 import android.Manifest;
 import android.app.Activity;
