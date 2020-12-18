@@ -95,7 +95,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void getFeatures(){
         apiServiceHERE = featureLocationCollectionManager.setupClient();
-        Call <FeatureCollection> call = apiServiceHERE.getFeatures();
+        Call <FeatureCollection> callEuropanel = apiServiceHERE.getFeatures("bXsuXVfP");
+        executeGetFeatures(callEuropanel);
+        Call <FeatureCollection> callTwoSign = apiServiceHERE.getFeatures("t5tgnuZA");
+        executeGetFeatures(callTwoSign);
+        Call <FeatureCollection> callAbri = apiServiceHERE.getFeatures("OA2v5p9Z");
+        executeGetFeatures(callAbri);
+    }
+
+    private void executeGetFeatures(Call <FeatureCollection> call){
         call.enqueue(new Callback<FeatureCollection>() {
             @Override
             public void onResponse(Call<FeatureCollection> call, Response<FeatureCollection> response) {
@@ -104,7 +112,10 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 FeatureCollection featureCollection = response.body();
-                features = featureCollection.getFeatures();
+                List<Feature> allCollectedFeatures = featureCollection.getFeatures();
+                for (Feature feature: allCollectedFeatures){
+                    features.add(feature);
+                }
                 mapMarkerPlacer = new MapMarkerPlacer(MainActivity.this, mapView, features);
                 mapMarkerPlacer.placeMapMarkers();
 

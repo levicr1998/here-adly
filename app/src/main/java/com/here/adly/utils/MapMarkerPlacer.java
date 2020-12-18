@@ -19,6 +19,9 @@ public class MapMarkerPlacer {
 private List<Feature> features = new ArrayList<>();
 private Context context;
 private MapView mapView;
+private static final String SPACE_NAME_EUROPANEL="bXsuXVfP";
+private static final String SPACE_NAME_TWOSIGN = "t5tgnuZA";
+private static final String SPACE_NAME_ABRI = "OA2v5p9Z";
 
     public MapMarkerPlacer(Context context, MapView mapView, List<Feature> features) {
         this.features = features;
@@ -30,9 +33,26 @@ private MapView mapView;
         for ( Feature feature: features) {
             GeoCoordinates geoCoordinates = new GeoCoordinates(feature.getGeometry().getCoordinates().get(1),feature.getGeometry().getCoordinates().get(0));
             Anchor2D anchor2D = new Anchor2D(0.5f, 1.0f);
-            MapImage mapImage = MapImageFactory.fromResource(context.getResources(), R.drawable.ad_picture);
+            MapImage mapImage = chooseAdPicture(feature.getProperties().getNsComHereXyz().getSpace());
             MapMarker mapMarker = new MapMarker(geoCoordinates, mapImage, anchor2D);
             mapView.getMapScene().addMapMarker(mapMarker);
         }
+    }
+
+    public MapImage chooseAdPicture(String spaceName) {
+      MapImage mapImage = MapImageFactory.fromResource(context.getResources(), R.drawable.ad_picture);
+        switch (spaceName) {
+            case SPACE_NAME_EUROPANEL:
+                mapImage = MapImageFactory.fromResource(context.getResources(), R.drawable.ad_picture);
+                break;
+            case SPACE_NAME_TWOSIGN:
+                mapImage = MapImageFactory.fromResource(context.getResources(), R.drawable.ad_picture2);
+                break;
+            case SPACE_NAME_ABRI:
+                mapImage = MapImageFactory.fromResource(context.getResources(), R.drawable.ad_picture3);
+                break;
+
+        }
+        return mapImage;
     }
 }

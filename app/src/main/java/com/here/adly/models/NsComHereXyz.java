@@ -15,6 +15,17 @@ public class NsComHereXyz {
     @SerializedName("tags")
     @Expose
     private List<String> tags = null;
+    @SerializedName("space")
+    @Expose
+    private String space;
+
+    public String getSpace() {
+        return space;
+    }
+
+    public void setSpace(String space) {
+        this.space = space;
+    }
 
     public float getCreatedAt() {
         return createdAt;
