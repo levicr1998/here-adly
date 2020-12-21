@@ -20,31 +20,38 @@
 package com.here.adly.activities;
 
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.navigation.NavigationView;
+import com.here.adly.fragments.FavoritesFragment;
+import com.here.adly.fragments.MapFragment;
 import com.here.adly.models.Feature;
-import com.here.adly.services.APIServiceHERE;
-import com.here.adly.services.FeatureLocationCollectionManager;
+import com.here.adly.preferences.SessionManager;
+import com.here.adly.webservices.APIServiceHERE;
+import com.here.adly.webservices.FeatureLocationCollectionManager;
 import com.here.adly.utils.MapMarkerPlacer;
 import com.here.adly.utils.PermissionsRequestor;
 import com.here.adly.R;
 import com.here.adly.models.FeatureCollection;
-import com.here.sdk.core.Anchor2D;
 import com.here.sdk.core.GeoCoordinates;
 import com.here.sdk.core.Point2D;
 import com.here.sdk.gestures.TapListener;
 import com.here.sdk.mapview.MapError;
-import com.here.sdk.mapview.MapImage;
-import com.here.sdk.mapview.MapImageFactory;
 import com.here.sdk.mapview.MapMarker;
 import com.here.sdk.mapview.MapScene;
 import com.here.sdk.mapview.MapScheme;
@@ -55,166 +62,58 @@ import com.here.sdk.mapview.PickMapItemsResult;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
-    private PermissionsRequestor permissionsRequestor;
-    private APIServiceHERE apiServiceHERE;
-    private FeatureLocationCollectionManager featureLocationCollectionManager;
-    private MapMarkerPlacer mapMarkerPlacer;
-    private MapView mapView;
-    private List<Feature> features = new ArrayList<>();
-    private TextView textViewResult;
+private SessionManager sessionManager;
+    private DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        sessionManager = new SessionManager(this);
+        drawer = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
 
-        textViewResult = findViewById(R.id.text_view_result);
+        if(savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MapFragment()).commit();
+            navigationView.setCheckedItem(R.id.nav_home);
+        }
 
-        // Get a MapView instance from the layout.
-        mapView = findViewById(R.id.map_view);
-        mapView.onCreate(savedInstanceState);
-        featureLocationCollectionManager = new FeatureLocationCollectionManager();
-        this.getFeatures();
 
-        mapView.setOnReadyListener(new MapView.OnReadyListener() {
-            @Override
-            public void onMapViewReady() {
-                // This will be called each time after this activity is resumed.
-                // It will not be called before the first map scene was loaded.
-                // Any code that requires map data may not work as expected beforehand.
-                Log.d(TAG, "HERE Rendering Engine attached.");
-
-            }
-        });
-
-        handleAndroidPermissions();
-    }
-
-    private void getFeatures(){
-        apiServiceHERE = featureLocationCollectionManager.setupClient();
-        Call <FeatureCollection> callEuropanel = apiServiceHERE.getFeatures("bXsuXVfP");
-        executeGetFeatures(callEuropanel);
-        Call <FeatureCollection> callTwoSign = apiServiceHERE.getFeatures("t5tgnuZA");
-        executeGetFeatures(callTwoSign);
-        Call <FeatureCollection> callAbri = apiServiceHERE.getFeatures("OA2v5p9Z");
-        executeGetFeatures(callAbri);
-    }
-
-    private void executeGetFeatures(Call <FeatureCollection> call){
-        call.enqueue(new Callback<FeatureCollection>() {
-            @Override
-            public void onResponse(Call<FeatureCollection> call, Response<FeatureCollection> response) {
-                if(!response.isSuccessful()){
-                    textViewResult.setText("Code: " + response.code());
-                }
-
-                FeatureCollection featureCollection = response.body();
-                List<Feature> allCollectedFeatures = featureCollection.getFeatures();
-                for (Feature feature: allCollectedFeatures){
-                    features.add(feature);
-                }
-                mapMarkerPlacer = new MapMarkerPlacer(MainActivity.this, mapView, features);
-                mapMarkerPlacer.placeMapMarkers();
-
-            }
-
-            @Override
-            public void onFailure(Call<FeatureCollection> call, Throwable t) {
-                textViewResult.setText(t.getMessage());
-            }
-        });
-    }
-
-    private void handleAndroidPermissions() {
-        permissionsRequestor = new PermissionsRequestor(this);
-        permissionsRequestor.request(new PermissionsRequestor.ResultListener(){
-
-            @Override
-            public void permissionsGranted() {
-                loadMapScene();
-                setTapGestureHandler();
-            }
-
-            @Override
-            public void permissionsDenied() {
-                Log.e(TAG, "Permissions denied by user.");
-            }
-        });
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        permissionsRequestor.onRequestPermissionsResult(requestCode, grantResults);
-    }
+    public void onBackPressed() {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
 
-    private void loadMapScene() {
-        // Load a scene from the HERE SDK to render the map with a map scheme.
-
-        mapView.getMapScene().loadScene(MapScheme.NORMAL_DAY, new MapScene.LoadSceneCallback() {
-            @Override
-            public void onLoadScene(@Nullable MapError mapError) {
-                if (mapError == null) {
-                    double distanceInMeters = 1000 * 10;
-                    mapView.getCamera().lookAt(
-                            new GeoCoordinates(51.44416,5.4788), distanceInMeters);
-
-
-                } else {
-                    Log.d(TAG, "Loading map failed: mapError: " + mapError.name());
-                }
-            }
-        });
-
-    }
-
-
-    private void setTapGestureHandler() {
-        mapView.getGestures().setTapListener(new TapListener() {
-            @Override
-            public void onTap(Point2D touchPoint) {
-                pickMapMarker(touchPoint);
-            }
-        });
-    }
-
-    private void pickMapMarker(final Point2D touchPoint) {
-        float radiusInPixel = 2;
-        mapView.pickMapItems(touchPoint, radiusInPixel, new MapViewBase.PickMapItemsCallback() {
-            @Override
-            public void onPickMapItems(@NonNull PickMapItemsResult pickMapItemsResult) {
-                List<MapMarker> mapMarkerList = pickMapItemsResult.getMarkers();
-                if (mapMarkerList.size() == 0) {
-                    return;
-                }
-                System.out.println("Works levi!");
-                MapMarker topmostMapMarker = mapMarkerList.get(0);
-                String text = "Map marker picked: Location: " +
-                        topmostMapMarker.getCoordinates().latitude + ", " +
-                        topmostMapMarker.getCoordinates().longitude;
-                Toast.makeText(getApplicationContext(),text ,
-                        Toast.LENGTH_LONG).show();
-            }
-        });
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        mapView.onPause();
-    }
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.nav_home:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MapFragment()).commit();
+                break;
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mapView.onResume();
-    }
+            case R.id.nav_favorites:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FavoritesFragment()).commit();
+                break;
+            case R.id.nav_logout:
+                break;
+        }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mapView.onDestroy();
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 }

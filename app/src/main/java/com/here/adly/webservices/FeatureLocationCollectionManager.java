@@ -1,12 +1,8 @@
-package com.here.adly.services;
+package com.here.adly.webservices;
 
-import com.here.adly.models.FeatureCollection;
 import com.here.adly.utils.TokenInterceptor;
 
 import okhttp3.OkHttpClient;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 

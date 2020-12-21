@@ -1,4 +1,4 @@
-package com.here.adly.services;
+package com.here.adly.webservices;
 
 import com.here.adly.models.FeatureCollection;
 

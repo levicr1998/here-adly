@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "868160470470",
+    "project_id": "adly-94433",
+    "storage_bucket": "adly-94433.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:868160470470:android:096b3bba01c406c68bc6c7",
+        "android_client_info": {
+          "package_name": "com.here.adly"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "868160470470-rg2o3oeun61028fmm3gucmihg6togum4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.here.adly",
+            "certificate_hash": "f6629d1376dabde8ea78a7c717d4ea28d2d255d1"
+          }
+        },
+        {
+          "client_id": "868160470470-jai93uhhhi4g6qiuhalqnieoimv6d2f0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfi6P-sT4zFUBa2EFqCbFLg1vvXgZ3w5Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "868160470470-jai93uhhhi4g6qiuhalqnieoimv6d2f0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
