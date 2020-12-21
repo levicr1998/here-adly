@@ -1,10 +1,12 @@
 package com.here.adly.fragments;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.here.adly.R;
@@ -44,7 +46,7 @@ public class MapFragment extends Fragment {
     private FeatureLocationCollectionManager featureLocationCollectionManager;
     private MapMarkerPlacer mapMarkerPlacer;
     private MapView mapView;
-    private List<Feature> features = new ArrayList<>();
+    private List<Feature> features;
 
 
     @Nullable
@@ -52,7 +54,7 @@ public class MapFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
-
+features = new ArrayList<>();
         // Get a MapView instance from the layout.
         mapView = view.findViewById(R.id.map_view);
         mapView.onCreate(savedInstanceState);
@@ -130,22 +132,37 @@ public class MapFragment extends Fragment {
 
     private void pickMapMarker(final Point2D touchPoint) {
         float radiusInPixel = 2;
-        mapView.pickMapItems(touchPoint, radiusInPixel, new MapViewBase.PickMapItemsCallback() {
-            @Override
-            public void onPickMapItems(@NonNull PickMapItemsResult pickMapItemsResult) {
-                List<MapMarker> mapMarkerList = pickMapItemsResult.getMarkers();
-                if (mapMarkerList.size() == 0) {
-                    return;
-                }
-                System.out.println("Works levi!");
-                MapMarker topmostMapMarker = mapMarkerList.get(0);
-                String text = "Map marker picked: Location: " +
-                        topmostMapMarker.getCoordinates().latitude + ", " +
-                        topmostMapMarker.getCoordinates().longitude;
-                Toast.makeText(getActivity().getApplicationContext(), text,
-                        Toast.LENGTH_LONG).show();
+        mapView.pickMapItems(touchPoint, radiusInPixel, pickMapItemsResult -> {
+            List<MapMarker> mapMarkerList = pickMapItemsResult.getMarkers();
+            if (mapMarkerList.size() == 0) {
+                return;
             }
+            MapMarker topmostMapMarker = mapMarkerList.get(0);
+            Feature matchedFeature = getFeatureFromCoordinates(topmostMapMarker);
+            final Dialog dialog = new Dialog(getActivity());
+            // Include dialog.xml file
+            dialog.setContentView(R.layout.fragment_details_advertisement); // layout of your dialog
+            TextView textView = dialog.findViewById(R.id.details_ad_name);
+            textView.setText(matchedFeature.getProperties().getName());
+            // Set dialog title
+            dialog.setTitle("Detail");
+            dialog.show();
+
         });
+    }
+
+    private Feature getFeatureFromCoordinates(MapMarker mapMarker){
+        Feature matchedFeature = new Feature();
+        double latitudeMapMarker = mapMarker.getCoordinates().latitude;
+        double longitudeMapMarker = mapMarker.getCoordinates().longitude;
+        for (Feature feature : features ) {
+            Double latitudeFeature = feature.getGeometry().getCoordinates().get(1);
+            Double longitudeFeature = feature.getGeometry().getCoordinates().get(0);
+            if (longitudeFeature.doubleValue() == longitudeMapMarker && latitudeFeature.doubleValue() == latitudeMapMarker) {
+                return feature;
+            }
+        }
+        return matchedFeature;
     }
 
     private void getFeatures() {

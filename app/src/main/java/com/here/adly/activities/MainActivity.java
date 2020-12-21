@@ -19,6 +19,7 @@
 
 package com.here.adly.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -110,10 +111,19 @@ private SessionManager sessionManager;
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FavoritesFragment()).commit();
                 break;
             case R.id.nav_logout:
+                sessionManager.removeSession();
+                startLoginActivity();
                 break;
         }
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    private void startLoginActivity() {
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
+    }
 }
+
+
