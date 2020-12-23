@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_marginTop="200dp"
     android:background="@android:color/holo_orange_dark">
     
     <TextView
@@ -12,6 +11,14 @@
         android:text="Naam Advertentie"
         android:textSize="25sp" />
 
+    <Button
+        android:id="@+id/btn_details_favorite"
+        android:layout_width="50sp"
+        android:layout_height="50sp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/ic_favorite"
+        android:layout_gravity="end"/>
+
     <TextView
         android:id="@+id/details_ad_price"
         android:layout_width="wrap_content"
@@ -19,7 +26,6 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="11dp"
-        android:layout_marginTop="51dp"
         android:text="€100"
         android:textSize="25sp" />
 
@@ -31,5 +37,7 @@
         android:layout_marginStart="97dp"
         android:layout_marginTop="162dp"
         android:text="Book now"></Button>
+
+
 
 </LinearLayout>

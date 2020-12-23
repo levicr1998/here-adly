@@ -36,46 +36,51 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        checkSession();
+
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        ETemail = findViewById(R.id.editTextLoginEmailadres);
-        ETpassword = findViewById(R.id.editTextLoginPassword);
-        buttonRegister = findViewById(R.id.tvLoginRegister);
-        mAuth = FirebaseAuth.getInstance();
-        progressDialog = new ProgressDialog(this);
-        buttonLogin = findViewById(R.id.buttonLogin);
 
-        buttonLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LoginUser();
-            }
-        });
+   if(checkSession()){
+       startMainActivity();
+   } else {
 
-        buttonRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startRegisterActivity();
-            }
-        });
+       setContentView(R.layout.activity_login);
+       ETemail = findViewById(R.id.editTextLoginEmailadres);
+       ETpassword = findViewById(R.id.editTextLoginPassword);
+       buttonRegister = findViewById(R.id.tvLoginRegister);
+       mAuth = FirebaseAuth.getInstance();
+       progressDialog = new ProgressDialog(this);
+       buttonLogin = findViewById(R.id.buttonLogin);
 
+       buttonLogin.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               LoginUser();
+           }
+       });
+
+       buttonRegister.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               startRegisterActivity();
+           }
+       });
+   }
 
     }
 
-    private void checkSession() {
+    private boolean checkSession() {
 
         sessionManager = new SessionManager(LoginActivity.this);
         String sessionId = sessionManager.getSession();
-        System.out.println(sessionId);
-        if (!sessionId.equals("none")) {
-            startMainActivity();
-        }
 
+        if (sessionId.equals("none")) {
+            return false;
+        }
+        return true;
     }
 
     private void startRegisterActivity() {

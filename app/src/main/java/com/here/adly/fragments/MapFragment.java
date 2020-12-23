@@ -34,6 +34,8 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -59,7 +61,7 @@ features = new ArrayList<>();
         mapView = view.findViewById(R.id.map_view);
         mapView.onCreate(savedInstanceState);
         featureLocationCollectionManager = new FeatureLocationCollectionManager();
-        this.getFeatures();
+            this.getFeatures();
 
         mapView.setOnReadyListener(new MapView.OnReadyListener() {
             @Override
@@ -139,15 +141,14 @@ features = new ArrayList<>();
             }
             MapMarker topmostMapMarker = mapMarkerList.get(0);
             Feature matchedFeature = getFeatureFromCoordinates(topmostMapMarker);
-            final Dialog dialog = new Dialog(getActivity());
-            // Include dialog.xml file
-            dialog.setContentView(R.layout.fragment_details_advertisement); // layout of your dialog
-            TextView textView = dialog.findViewById(R.id.details_ad_name);
-            textView.setText(matchedFeature.getProperties().getName());
-            // Set dialog title
-            dialog.setTitle("Detail");
-            dialog.show();
 
+
+DetailsFragment detailsFragment = new DetailsFragment();
+         Bundle bundle = new Bundle();
+         bundle.putString("adName",matchedFeature.getProperties().getName());
+            bundle.putString("adId",matchedFeature.getId());
+         detailsFragment.setArguments(bundle);
+            this.getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, detailsFragment).commit();
         });
     }
 
