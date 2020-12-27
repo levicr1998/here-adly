@@ -16,12 +16,12 @@ import java.util.List;
 
 public class MapMarkerPlacer {
 
-private List<Feature> features = new ArrayList<>();
-private Context context;
-private MapView mapView;
-private static final String SPACE_NAME_EUROPANEL="bXsuXVfP";
-private static final String SPACE_NAME_TWOSIGN = "t5tgnuZA";
-private static final String SPACE_NAME_ABRI = "OA2v5p9Z";
+    private List<Feature> features = new ArrayList<>();
+    private Context context;
+    private MapView mapView;
+    private static final String SPACE_NAME_EUROPANEL = "bXsuXVfP";
+    private static final String SPACE_NAME_TWOSIGN = "t5tgnuZA";
+    private static final String SPACE_NAME_ABRI = "OA2v5p9Z";
 
     public MapMarkerPlacer(Context context, MapView mapView, List<Feature> features) {
         this.features = features;
@@ -29,9 +29,9 @@ private static final String SPACE_NAME_ABRI = "OA2v5p9Z";
         this.mapView = mapView;
     }
 
-    public void placeMapMarkers(){
-        for ( Feature feature: features) {
-            GeoCoordinates geoCoordinates = new GeoCoordinates(feature.getGeometry().getCoordinates().get(1),feature.getGeometry().getCoordinates().get(0));
+    public void placeMapMarkers() {
+        for (Feature feature : features) {
+            GeoCoordinates geoCoordinates = new GeoCoordinates(feature.getGeometry().getCoordinates().get(1), feature.getGeometry().getCoordinates().get(0));
             Anchor2D anchor2D = new Anchor2D(0.5f, 1.0f);
             MapImage mapImage = chooseAdPicture(feature.getProperties().getNsComHereXyz().getSpace());
             MapMarker mapMarker = new MapMarker(geoCoordinates, mapImage, anchor2D);
@@ -40,7 +40,7 @@ private static final String SPACE_NAME_ABRI = "OA2v5p9Z";
     }
 
     public MapImage chooseAdPicture(String spaceName) {
-      MapImage mapImage = MapImageFactory.fromResource(context.getResources(), R.drawable.ad_picture);
+        MapImage mapImage = MapImageFactory.fromResource(context.getResources(), R.drawable.ad_picture);
         switch (spaceName) {
             case SPACE_NAME_EUROPANEL:
                 mapImage = MapImageFactory.fromResource(context.getResources(), R.drawable.ad_picture);

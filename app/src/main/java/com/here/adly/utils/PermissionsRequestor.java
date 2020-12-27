@@ -24,6 +24,7 @@ import android.app.Activity;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
+
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -45,6 +46,7 @@ public class PermissionsRequestor {
 
     public interface ResultListener {
         void permissionsGranted();
+
         void permissionsDenied();
     }
 
@@ -76,7 +78,7 @@ public class PermissionsRequestor {
                             continue;
                         }
                         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q &&
-                            permission.equals(Manifest.permission.ACTIVITY_RECOGNITION)) {
+                                permission.equals(Manifest.permission.ACTIVITY_RECOGNITION)) {
                             continue;
                         }
                         permissionList.add(permission);

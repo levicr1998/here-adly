@@ -7,14 +7,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.here.adly.R;
 import com.here.adly.db.DatabaseFB;
+import com.here.adly.viewmodels.FavItemViewModel;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,13 +23,14 @@ import androidx.fragment.app.Fragment;
 
 public class DetailsFragment extends Fragment {
 
-    TextView TVadName;
-    Button BTNadFavorite;
-    boolean isFavorited;
-    public DatabaseFB databaseFB;
-    public DatabaseReference mFavoritesReference;
+    private TextView tvAdName;
+    private Button btnAdFavorite, btnAdReviews;
+
+    private DatabaseFB databaseFB;
+    private DatabaseReference mFavoritesReference;
+    private FavItemViewModel favItemViewModel;
     private FirebaseAuth mAuth;
-    Bundle b;
+    private Bundle dataBundle;
 
     @Nullable
     @Override
@@ -36,18 +38,26 @@ public class DetailsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_details_advertisement, container, false);
         this.databaseFB = new DatabaseFB();
         this.mAuth = FirebaseAuth.getInstance();
-        this.b = getArguments();
-        TVadName = view.findViewById(R.id.details_ad_name);
-        BTNadFavorite = view.findViewById(R.id.btn_details_favorite);
+        this.dataBundle = getArguments();
+        NavigationView navigationView = getActivity().findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+
+        tvAdName = view.findViewById(R.id.details_ad_name);
+        btnAdFavorite = view.findViewById(R.id.btn_details_favorite);
+        btnAdReviews = view.findViewById(R.id.btn_details_reviews);
         getDetailsAdvertisement();
-        BTNadFavorite.setOnClickListener(new View.OnClickListener() {
+        btnAdFavorite.setOnClickListener(view1 -> {
+            if (favItemViewModel.getStatus() == true) {
+                setAdStatusFavorite(mAuth.getCurrentUser().getUid(), dataBundle.getString("adId"), false);
+            } else {
+                setAdStatusFavorite(mAuth.getCurrentUser().getUid(), dataBundle.getString("adId"), true);
+            }
+        });
+
+        btnAdReviews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isFavorited == true) {
-                    setAdStatusFavorite(mAuth.getCurrentUser().getUid(), b.getString("adId"), false);
-                } else {
-                    setAdStatusFavorite(mAuth.getCurrentUser().getUid(), b.getString("adId"), true);
-                }
+                startReviewsFragment(dataBundle.getString("adId"));
             }
         });
 
@@ -55,40 +65,82 @@ public class DetailsFragment extends Fragment {
     }
 
     private void getDetailsAdvertisement() {
-        String nameAd = b.getString("adId");
-        getAdStatusFavorite(mAuth.getCurrentUser().getUid(), b.getString("adId"));
-        TVadName.setText(nameAd);
+        String adSpaceId = dataBundle.getString("adSpaceId");
+        String adName = dataBundle.getString("adName");
+        String adId = dataBundle.getString("adId");
+        getAdStatusFavorite(mAuth.getCurrentUser().getUid(), adId, adSpaceId, adName);
+        tvAdName.setText(adName);
     }
 
-    private void getAdStatusFavorite(String userId, String adId) {
+    private void startReviewsFragment(String adId) {
+        ReviewsFragment reviewsFragment = new ReviewsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("adId", adId);
+        reviewsFragment.setArguments(bundle);
+        this.getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, reviewsFragment).commit();
+    }
 
-        mFavoritesReference = FirebaseDatabase.getInstance().getReference().child("userFavorite").child(userId).child(adId);
+    private void getAdStatusFavorite(String userId, String adId, String spaceId, String adName) {
+        mFavoritesReference = databaseFB.mDatabase.child("userFavorite").child(userId).child(adId);
         mFavoritesReference.keepSynced(true);
         mFavoritesReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()) {
+                if (snapshot.exists()) {
 
-                    isFavorited = (Boolean) snapshot.getValue();
-                    if (isFavorited == true) {
-                        BTNadFavorite.setBackgroundResource(R.drawable.ic_favorite_red);
+                    favItemViewModel = snapshot.getValue(FavItemViewModel.class);
+
+
+                    if (favItemViewModel.getStatus() == true) {
+                        btnAdFavorite.setBackgroundResource(R.drawable.ic_favorite_red);
                     } else {
-                        BTNadFavorite.setBackgroundResource(R.drawable.ic_favorite);
+                        btnAdFavorite.setBackgroundResource(R.drawable.ic_favorite);
                     }
+
                 } else {
-                    setAdStatusFavorite(userId,adId,false);
+                    if (spaceId != null) {
+                        addUserFavorite(userId, adId, spaceId, adName, false);
+                    } else {
+                        addSpaceId(userId, adId);
+                    }
                 }
+
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-System.out.println("Fout");
+                System.out.println("Fout");
             }
         });
     }
 
+
     private void setAdStatusFavorite(String userId, String adId, boolean statusFavorite) {
 
-        databaseFB.mDatabase.child("userFavorite").child(userId).child(adId).setValue(statusFavorite);
+        databaseFB.mDatabase.child("userFavorite").child(userId).child(adId).child("status").setValue(statusFavorite);
+    }
+
+    private void addUserFavorite(String userId, String adId, String spaceId, String adName, boolean statusFavorite) {
+
+        databaseFB.mDatabase.child("userFavorite").child(userId).child(adId).child("status").setValue(statusFavorite);
+        databaseFB.mDatabase.child("userFavorite").child(userId).child(adId).child("spaceId").setValue(spaceId);
+        databaseFB.mDatabase.child("userFavorite").child(userId).child(adId).child("adName").setValue(adName);
+    }
+
+    private void addSpaceId(String userId, String adId) {
+        DatabaseReference spaceReference = databaseFB.mDatabase.child("userFavorite").child(userId).child(adId).child("spaceId");
+        spaceReference.keepSynced(true);
+        spaceReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                dataBundle.putString("adSpaceId", snapshot.getValue().toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }

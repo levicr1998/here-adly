@@ -65,7 +65,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-private SessionManager sessionManager;
+    private SessionManager sessionManager;
     private DrawerLayout drawer;
 
 
@@ -83,7 +83,7 @@ private SessionManager sessionManager;
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        if(savedInstanceState == null) {
+        if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MapFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_home);
         }
@@ -103,7 +103,7 @@ private SessionManager sessionManager;
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.nav_home:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MapFragment()).commit();
                 break;

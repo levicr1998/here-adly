@@ -50,18 +50,22 @@ public class MapFragment extends Fragment {
     private MapView mapView;
     private List<Feature> features;
 
+    private static final String SPACE_ID_EUROPANEL = "bXsuXVfP";
+    private static final String SPACE_ID_TWOSIGN = "t5tgnuZA";
+    private static final String SPACE_ID_ABRI = "OA2v5p9Z";
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
-features = new ArrayList<>();
+        features = new ArrayList<>();
         // Get a MapView instance from the layout.
         mapView = view.findViewById(R.id.map_view);
         mapView.onCreate(savedInstanceState);
         featureLocationCollectionManager = new FeatureLocationCollectionManager();
-            this.getFeatures();
+        this.getFeatures();
 
         mapView.setOnReadyListener(new MapView.OnReadyListener() {
             @Override
@@ -99,7 +103,6 @@ features = new ArrayList<>();
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         permissionsRequestor.onRequestPermissionsResult(requestCode, grantResults);
     }
-
 
 
     private void loadMapScene() {
@@ -141,22 +144,28 @@ features = new ArrayList<>();
             }
             MapMarker topmostMapMarker = mapMarkerList.get(0);
             Feature matchedFeature = getFeatureFromCoordinates(topmostMapMarker);
+            startDetailsFragment(matchedFeature.getProperties().getName(), matchedFeature.getId(), matchedFeature.getSpaceId());
 
 
-DetailsFragment detailsFragment = new DetailsFragment();
-         Bundle bundle = new Bundle();
-         bundle.putString("adName",matchedFeature.getProperties().getName());
-            bundle.putString("adId",matchedFeature.getId());
-         detailsFragment.setArguments(bundle);
-            this.getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, detailsFragment).commit();
         });
     }
 
-    private Feature getFeatureFromCoordinates(MapMarker mapMarker){
+    private void startDetailsFragment(String featureName, String featureId, String featureSpaceId) {
+        DetailsFragment detailsFragment = new DetailsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("adName", featureName);
+        bundle.putString("adId", featureId);
+        bundle.putString("adSpaceId", featureSpaceId);
+        detailsFragment.setArguments(bundle);
+        this.getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragment_container, detailsFragment).commit();
+    }
+
+
+    private Feature getFeatureFromCoordinates(MapMarker mapMarker) {
         Feature matchedFeature = new Feature();
         double latitudeMapMarker = mapMarker.getCoordinates().latitude;
         double longitudeMapMarker = mapMarker.getCoordinates().longitude;
-        for (Feature feature : features ) {
+        for (Feature feature : features) {
             Double latitudeFeature = feature.getGeometry().getCoordinates().get(1);
             Double longitudeFeature = feature.getGeometry().getCoordinates().get(0);
             if (longitudeFeature.doubleValue() == longitudeMapMarker && latitudeFeature.doubleValue() == latitudeMapMarker) {
@@ -168,15 +177,15 @@ DetailsFragment detailsFragment = new DetailsFragment();
 
     private void getFeatures() {
         apiServiceHERE = featureLocationCollectionManager.setupClient();
-        Call<FeatureCollection> callEuropanel = apiServiceHERE.getFeatures("bXsuXVfP");
-        executeGetFeatures(callEuropanel);
-        Call<FeatureCollection> callTwoSign = apiServiceHERE.getFeatures("t5tgnuZA");
-        executeGetFeatures(callTwoSign);
-        Call<FeatureCollection> callAbri = apiServiceHERE.getFeatures("OA2v5p9Z");
-        executeGetFeatures(callAbri);
+        Call<FeatureCollection> callEuropanel = apiServiceHERE.getFeatures(SPACE_ID_EUROPANEL);
+        executeGetFeatures(callEuropanel, SPACE_ID_EUROPANEL);
+        Call<FeatureCollection> callTwoSign = apiServiceHERE.getFeatures(SPACE_ID_TWOSIGN);
+        executeGetFeatures(callTwoSign, SPACE_ID_TWOSIGN);
+        Call<FeatureCollection> callAbri = apiServiceHERE.getFeatures(SPACE_ID_ABRI);
+        executeGetFeatures(callAbri, SPACE_ID_ABRI);
     }
 
-    private void executeGetFeatures(Call<FeatureCollection> call) {
+    private void executeGetFeatures(Call<FeatureCollection> call, String spaceId) {
         call.enqueue(new Callback<FeatureCollection>() {
             @Override
             public void onResponse(Call<FeatureCollection> call, Response<FeatureCollection> response) {
@@ -186,6 +195,7 @@ DetailsFragment detailsFragment = new DetailsFragment();
                 FeatureCollection featureCollection = response.body();
                 List<Feature> allCollectedFeatures = featureCollection.getFeatures();
                 for (Feature feature : allCollectedFeatures) {
+                    feature.setSpaceId(spaceId);
                     features.add(feature);
                 }
                 mapMarkerPlacer = new MapMarkerPlacer(getActivity(), mapView, features);

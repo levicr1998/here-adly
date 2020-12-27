@@ -38,6 +38,11 @@
         android:layout_marginTop="162dp"
         android:text="Book now"></Button>
 
+    <Button
+        android:id="@+id/btn_details_reviews"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Reviews" />
 
 
 </LinearLayout>

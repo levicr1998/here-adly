@@ -17,6 +17,16 @@ public class Feature {
     @Expose
     private Properties properties;
 
+    private String spaceId;
+
+    public String getSpaceId() {
+        return spaceId;
+    }
+
+    public void setSpaceId(String spaceId) {
+        this.spaceId = spaceId;
+    }
+
     public String getType() {
         return type;
     }

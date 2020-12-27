@@ -27,61 +27,58 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private SessionManager sessionManager;
     private ProgressDialog progressDialog;
-    private EditText editTextFullName, editTextEmail, editTextPassword, editTextRepeatPassword;
-private Button button;
+    private EditText etFullName, etEmail, etPassword, etRepeatPassword;
+    private Button btnRegister;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-mAuth = mAuth.getInstance();
-editTextEmail = findViewById(R.id.editTextLoginEmailadres);
-editTextFullName = findViewById(R.id.editTextRegisterFullname);
-editTextPassword = findViewById(R.id.editTextRegisterPassword);
-editTextRepeatPassword = findViewById(R.id.editTextRegisterRepeatPassword);
-button = findViewById(R.id.buttonRegister);
-progressDialog = new ProgressDialog(this);
-sessionManager = new SessionManager(RegisterActivity.this);
+        mAuth = mAuth.getInstance();
+        etEmail = findViewById(R.id.editTextLoginEmailadres);
+        etFullName = findViewById(R.id.editTextRegisterFullname);
+        etPassword = findViewById(R.id.editTextRegisterPassword);
+        etRepeatPassword = findViewById(R.id.editTextRegisterRepeatPassword);
+        btnRegister = findViewById(R.id.buttonRegister);
+        progressDialog = new ProgressDialog(this);
+        sessionManager = new SessionManager(RegisterActivity.this);
 
-button.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-registerUser();
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                registerUser();
+            }
+        });
     }
-});
-    }
 
 
-    private void registerUser(){
-        String email = editTextEmail.getText().toString();
-        String fullname = editTextFullName.getText().toString();
-        String password = editTextPassword.getText().toString();
-        String repeatPassword = editTextRepeatPassword.getText().toString();
+    private void registerUser() {
+        String email = etEmail.getText().toString();
+        String fullname = etFullName.getText().toString();
+        String password = etPassword.getText().toString();
+        String repeatPassword = etRepeatPassword.getText().toString();
 
 
-        if(TextUtils.isEmpty(email)){
-            editTextEmail.setError("Enter your email");
+        if (TextUtils.isEmpty(email)) {
+            etEmail.setError("Enter your email");
             return;
-        }
-        else if(TextUtils.isEmpty(fullname)){
-            editTextFullName.setError("Enter your fullname");
+        } else if (TextUtils.isEmpty(fullname)) {
+            etFullName.setError("Enter your fullname");
             return;
-        }
-        else if(TextUtils.isEmpty(password)){
-            editTextPassword.setError("Enter your password");
+        } else if (TextUtils.isEmpty(password)) {
+            etPassword.setError("Enter your password");
             return;
-        }
-        else if(TextUtils.isEmpty(repeatPassword)) {
-            editTextPassword.setError("Confirm your password");
+        } else if (TextUtils.isEmpty(repeatPassword)) {
+            etPassword.setError("Confirm your password");
             return;
-        } else if(TextUtils.isEmpty(repeatPassword)){
-            editTextRepeatPassword.setError("Confirm your password!");
+        } else if (TextUtils.isEmpty(repeatPassword)) {
+            etRepeatPassword.setError("Confirm your password!");
             return;
-        } else if(!password.equals(repeatPassword)){
-editTextRepeatPassword.setError("The passwords are note equal");
-        } else if(!isValidEmail(email)){
-            editTextEmail.setError("Invalid email");
+        } else if (!password.equals(repeatPassword)) {
+            etRepeatPassword.setError("The passwords are note equal");
+        } else if (!isValidEmail(email)) {
+            etEmail.setError("Invalid email");
             return;
         }
 
@@ -91,33 +88,33 @@ editTextRepeatPassword.setError("The passwords are note equal");
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-              if(task.isSuccessful()){
-                  User user = new User(mAuth.getInstance().getCurrentUser().getUid(),fullname, email);
+                if (task.isSuccessful()) {
+                    User user = new User(mAuth.getInstance().getCurrentUser().getUid(), fullname, email);
 
-                  FirebaseDatabase.getInstance().getReference("Users").child(mAuth.getInstance().getCurrentUser().getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                      @Override
-                      public void onComplete(@NonNull Task<Void> task) {
-                          if(task.isSuccessful()){
-                              Toast.makeText(RegisterActivity.this, "Succesfully registered", Toast.LENGTH_LONG).show();
-                              sessionManager.saveSession(user);
-                              Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                              startActivity(intent);
-                              finish();
-                          } else {
-                              Toast.makeText(RegisterActivity.this, "Registration failed!", Toast.LENGTH_LONG).show();
-                          }
-                      }
-                  });
-              } else{
-                  Toast.makeText(RegisterActivity.this, "Registration failed!", Toast.LENGTH_LONG).show();
-              }
-              progressDialog.dismiss();
+                    FirebaseDatabase.getInstance().getReference("Users").child(mAuth.getInstance().getCurrentUser().getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(RegisterActivity.this, "Succesfully registered", Toast.LENGTH_LONG).show();
+                                sessionManager.saveSession(user);
+                                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                Toast.makeText(RegisterActivity.this, "Registration failed!", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+                } else {
+                    Toast.makeText(RegisterActivity.this, "Registration failed!", Toast.LENGTH_LONG).show();
+                }
+                progressDialog.dismiss();
             }
         });
     }
 
 
-    private Boolean isValidEmail(CharSequence target){
+    private Boolean isValidEmail(CharSequence target) {
         return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
 }

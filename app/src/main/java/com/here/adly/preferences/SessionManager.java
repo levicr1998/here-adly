@@ -19,7 +19,7 @@ public class SessionManager {
     }
 
     public void saveSession(User user) {
-        String id = user.id;
+        String id = user.getId();
         editor.putString(SESSION_KEY, id).commit();
     }
 
@@ -30,7 +30,6 @@ public class SessionManager {
 
     public void removeSession() {
 
-        System.out.println(getSession());
         editor.putString(SESSION_KEY, noSession).commit();
     }
 }

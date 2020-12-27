@@ -12,8 +12,8 @@ public class TokenInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
 
         //rewrite the request to add bearer token
-        Request newRequest=chain.request().newBuilder()
-                .header("Authorization","Bearer "+ "AH2U9HruSOucD0l5fzuErgA")
+        Request newRequest = chain.request().newBuilder()
+                .header("Authorization", "Bearer " + "AH2U9HruSOucD0l5fzuErgA")
                 .build();
 
         return chain.proceed(newRequest);

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/cv_review_item_card">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <TextView
+            android:id="@+id/tv_review_item_writer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Writer"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold"
+android:padding="5dp" />
+
+        <TextView
+            android:id="@+id/tv_review_item_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="Super goede ad"
+            android:textColor="@color/colorAccent"
+      />
+
+
+        <RatingBar
+            android:id="@+id/rb_item_rate"
+            style="@style/Widget.AppCompat.RatingBar.Indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:padding="5dp" />
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

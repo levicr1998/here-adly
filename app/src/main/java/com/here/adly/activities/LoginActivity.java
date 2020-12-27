@@ -4,11 +4,9 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -26,10 +24,10 @@ import com.here.adly.preferences.SessionManager;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText ETemail, ETpassword;
+    private EditText etEmail, etPassword;
     private FirebaseAuth mAuth;
     private ProgressDialog progressDialog;
-    private Button buttonRegister, buttonLogin;
+    private Button btnRegister, btnLogin;
     private SessionManager sessionManager;
 
     @Override
@@ -43,32 +41,32 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-   if(checkSession()){
-       startMainActivity();
-   } else {
+        if (checkSession()) {
+            startMainActivity();
+        } else {
 
-       setContentView(R.layout.activity_login);
-       ETemail = findViewById(R.id.editTextLoginEmailadres);
-       ETpassword = findViewById(R.id.editTextLoginPassword);
-       buttonRegister = findViewById(R.id.tvLoginRegister);
-       mAuth = FirebaseAuth.getInstance();
-       progressDialog = new ProgressDialog(this);
-       buttonLogin = findViewById(R.id.buttonLogin);
+            setContentView(R.layout.activity_login);
+            etEmail = findViewById(R.id.editTextLoginEmailadres);
+            etPassword = findViewById(R.id.editTextLoginPassword);
+            btnRegister = findViewById(R.id.tvLoginRegister);
+            mAuth = FirebaseAuth.getInstance();
+            progressDialog = new ProgressDialog(this);
+            btnLogin = findViewById(R.id.buttonLogin);
 
-       buttonLogin.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-               LoginUser();
-           }
-       });
+            btnLogin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    LoginUser();
+                }
+            });
 
-       buttonRegister.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-               startRegisterActivity();
-           }
-       });
-   }
+            btnRegister.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startRegisterActivity();
+                }
+            });
+        }
 
     }
 
@@ -94,15 +92,15 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void LoginUser() {
-        String email = ETemail.getText().toString();
-        String password = ETpassword.getText().toString();
+        String email = etEmail.getText().toString();
+        String password = etPassword.getText().toString();
 
 
         if (TextUtils.isEmpty(email)) {
-            ETemail.setError("Enter your email");
+            etEmail.setError("Enter your email");
             return;
         } else if (TextUtils.isEmpty(password)) {
-            ETpassword.setError("Enter your password");
+            etPassword.setError("Enter your password");
             return;
         }
 
