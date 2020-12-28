@@ -1,4 +1,4 @@
-package com.here.adly.fragments;
+package com.here.adly.ui.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,6 +18,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,6 +41,8 @@ public class FavoritesFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         getFavoritesList(mAuth.getUid());
+
+
 
         return view;
     }

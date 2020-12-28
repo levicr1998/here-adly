@@ -13,7 +13,7 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.here.adly.R;
 import com.here.adly.db.DatabaseFB;
-import com.here.adly.fragments.DetailsFragment;
+import com.here.adly.ui.fragments.DetailsFragment;
 import com.here.adly.viewmodels.FavItemViewModel;
 
 

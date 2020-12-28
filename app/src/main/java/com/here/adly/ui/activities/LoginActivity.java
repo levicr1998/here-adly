@@ -1,4 +1,4 @@
-package com.here.adly.activities;
+package com.here.adly.ui.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;

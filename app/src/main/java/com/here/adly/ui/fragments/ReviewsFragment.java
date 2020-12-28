@@ -1,4 +1,4 @@
-package com.here.adly.fragments;
+package com.here.adly.ui.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,14 +7,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.firebase.ui.database.ObservableSnapshotArray;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.here.adly.R;
-import com.here.adly.adapters.FavoritesAdapter;
 import com.here.adly.adapters.ReviewsAdapter;
-import com.here.adly.viewmodels.FavItemViewModel;
 import com.here.adly.viewmodels.ReviewItemViewModel;
 
 import java.util.ArrayList;

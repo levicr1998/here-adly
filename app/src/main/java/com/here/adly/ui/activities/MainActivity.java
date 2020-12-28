@@ -17,72 +17,56 @@
  * License-Filename: LICENSE
  */
 
-package com.here.adly.activities;
+package com.here.adly.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import androidx.fragment.app.FragmentManager;
 
-import android.util.Log;
 import android.view.MenuItem;
-import android.widget.TextView;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
-import com.here.adly.fragments.FavoritesFragment;
-import com.here.adly.fragments.MapFragment;
-import com.here.adly.models.Feature;
+import com.here.adly.ui.fragments.FavoritesFragment;
+import com.here.adly.ui.fragments.MapFragment;
 import com.here.adly.preferences.SessionManager;
-import com.here.adly.webservices.APIServiceHERE;
-import com.here.adly.webservices.FeatureLocationCollectionManager;
-import com.here.adly.utils.MapMarkerPlacer;
-import com.here.adly.utils.PermissionsRequestor;
 import com.here.adly.R;
-import com.here.adly.models.FeatureCollection;
-import com.here.sdk.core.GeoCoordinates;
-import com.here.sdk.core.Point2D;
-import com.here.sdk.gestures.TapListener;
-import com.here.sdk.mapview.MapError;
-import com.here.sdk.mapview.MapMarker;
-import com.here.sdk.mapview.MapScene;
-import com.here.sdk.mapview.MapScheme;
-import com.here.sdk.mapview.MapView;
-import com.here.sdk.mapview.MapViewBase;
-import com.here.sdk.mapview.PickMapItemsResult;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, FragmentManager.OnBackStackChangedListener {
 
     private SessionManager sessionManager;
     private DrawerLayout drawer;
+    private ActionBarDrawerToggle toggle;
+    private Toolbar toolbar;
+    private boolean toolbarNavigationListenerIsRegistered;
+    private NavigationView navigationView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         sessionManager = new SessionManager(this);
         drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        getSupportFragmentManager().addOnBackStackChangedListener(this);
+        displayHomeUpOrHamburger();
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MapFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_home);
@@ -102,14 +86,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        System.out.println(item.getItemId());
         switch (item.getItemId()) {
             case R.id.nav_home:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MapFragment()).commit();
                 break;
 
             case R.id.nav_favorites:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FavoritesFragment()).commit();
+                getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragment_container, new FavoritesFragment()).commit();
+                break;
+            case R.id.nav_about:
+            case R.id.nav_settings:
+            case R.id.nav_contact:
+                item.setChecked(false);
+                item.setCheckable(false);
                 break;
             case R.id.nav_logout:
                 sessionManager.removeSession();
@@ -121,9 +117,39 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    private void displayHomeUpOrHamburger() {
+        boolean upBtn = getSupportFragmentManager().getBackStackEntryCount() > 0;
+        if (upBtn) {
+            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            toggle.setDrawerIndicatorEnabled(false);
+            if (!toolbarNavigationListenerIsRegistered) {
+                toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        getSupportFragmentManager().popBackStackImmediate();
+                    }
+                });
+                toolbarNavigationListenerIsRegistered = true;
+            }
+        } else {
+            navigationView.setCheckedItem(R.id.nav_home);
+            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            toggle.setDrawerIndicatorEnabled(true);
+            toggle.setToolbarNavigationClickListener(null);
+            toolbarNavigationListenerIsRegistered = false;
+        }
+
+
+}
+
     private void startLoginActivity() {
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onBackStackChanged() {
+        displayHomeUpOrHamburger();
     }
 }
 

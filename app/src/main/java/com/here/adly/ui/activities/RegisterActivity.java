@@ -1,4 +1,4 @@
-package com.here.adly.activities;
+package com.here.adly.ui.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;

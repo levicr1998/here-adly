@@ -1,4 +1,4 @@
-package com.here.adly.fragments;
+package com.here.adly.ui.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

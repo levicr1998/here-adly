@@ -1,4 +1,4 @@
-package com.here.adly.fragments;
+package com.here.adly.ui.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -39,8 +39,6 @@ public class DetailsFragment extends Fragment {
         this.databaseFB = new DatabaseFB();
         this.mAuth = FirebaseAuth.getInstance();
         this.dataBundle = getArguments();
-        NavigationView navigationView = getActivity().findViewById(R.id.nav_view);
-        View headerView = navigationView.getHeaderView(0);
 
         tvAdName = view.findViewById(R.id.details_ad_name);
         btnAdFavorite = view.findViewById(R.id.btn_details_favorite);
@@ -77,7 +75,7 @@ public class DetailsFragment extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putString("adId", adId);
         reviewsFragment.setArguments(bundle);
-        this.getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, reviewsFragment).commit();
+        this.getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragment_container, reviewsFragment).commit();
     }
 
     private void getAdStatusFavorite(String userId, String adId, String spaceId, String adName) {
@@ -143,4 +141,5 @@ public class DetailsFragment extends Fragment {
             }
         });
     }
+
 }

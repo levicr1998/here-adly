@@ -9,9 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.RegisterActivity" />
+        <activity android:name=".ui.activities.RegisterActivity" />
         <activity
-            android:name=".activities.LoginActivity"
+            android:name=".ui.activities.LoginActivity"
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -21,7 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity> <!-- Set your credentials for the HERE SDK. -->
-        <activity android:name=".activities.MainActivity" />
+        <activity android:name=".ui.activities.MainActivity" />
 
         <meta-data
             android:name="com.here.sdk.access_key_secret"
