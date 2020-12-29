@@ -43,6 +43,7 @@ import android.widget.TextView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.here.adly.ui.fragments.FavoritesFragment;
+import com.here.adly.ui.fragments.FilterDialogFragment;
 import com.here.adly.ui.fragments.MapFragment;
 import com.here.adly.preferences.SessionManager;
 import com.here.adly.R;
@@ -146,7 +147,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.toolbar_item_filter:
-
+                FragmentManager fm = getSupportFragmentManager();
+               FilterDialogFragment filterDialogFragment = FilterDialogFragment.newInstance("Some Title");
+                filterDialogFragment.show(fm, "fragment_filter");
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
