@@ -9,9 +9,10 @@
     >
 
     <TextView
+        android:id="@+id/nav_header_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Levi Crietee">
+        android:text="Name">
 
     </TextView>
 </LinearLayout>

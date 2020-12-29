@@ -32,9 +32,11 @@ import androidx.fragment.app.FragmentManager;
 
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.here.adly.ui.fragments.FavoritesFragment;
 import com.here.adly.ui.fragments.MapFragment;
 import com.here.adly.preferences.SessionManager;
@@ -46,8 +48,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
     private Toolbar toolbar;
+    private TextView tvNavHeaderName;
     private boolean toolbarNavigationListenerIsRegistered;
     private NavigationView navigationView;
+    private FirebaseAuth mAuth;
 
 
     @Override
@@ -60,6 +64,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         sessionManager = new SessionManager(this);
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+        tvNavHeaderName = headerView.findViewById(R.id.nav_header_name);
+        mAuth = FirebaseAuth.getInstance();
+        tvNavHeaderName.setText(mAuth.getCurrentUser().getDisplayName());
         navigationView.setNavigationItemSelectedListener(this);
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -109,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_logout:
                 sessionManager.removeSession();
+                mAuth.signOut();
                 startLoginActivity();
                 break;
         }

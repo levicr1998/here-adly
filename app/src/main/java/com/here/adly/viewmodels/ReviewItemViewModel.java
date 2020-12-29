@@ -4,6 +4,7 @@ public class ReviewItemViewModel {
 
     private String message;
     private String rating;
+    private String userId;
 
     public ReviewItemViewModel(){
 
@@ -28,5 +29,13 @@ public class ReviewItemViewModel {
 
     public void setRating(String rating) {
         this.rating = rating;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

@@ -33,7 +33,7 @@ public class ReviewsAdapter extends FirebaseRecyclerAdapter<ReviewItemViewModel,
 
     @Override
     protected void onBindViewHolder(@NonNull ReviewsAdapter.ViewHolder viewHolder, int i, @NonNull ReviewItemViewModel reviewItemViewModel) {
-        this.setWriterReview(viewHolder, this.getRef(i).getKey());
+        this.setWriterReview(viewHolder, reviewItemViewModel.getUserId());
         viewHolder.tvReviewMessage.setText(reviewItemViewModel.getMessage());
         viewHolder.rbReview.setRating(Float.parseFloat(reviewItemViewModel.getRating()));
     }

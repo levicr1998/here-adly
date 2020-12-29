@@ -50,8 +50,10 @@ public class WriteReviewFragment extends Fragment {
 
     private void addUserReview(String userId, String adId, String message, String rating) {
 
-        databaseFB.mDatabase.child("adReviews").child(adId).child(userId).child("message").setValue(message);
-        databaseFB.mDatabase.child("adReviews").child(adId).child(userId).child("rating").setValue(rating);
+        String reviewId = databaseFB.mDatabase.child("adReviews").child(adId).push().getKey();
+        databaseFB.mDatabase.child("adReviews").child(adId).child(reviewId).child("userId").setValue(userId);
+        databaseFB.mDatabase.child("adReviews").child(adId).child(reviewId).child("message").setValue(message);
+        databaseFB.mDatabase.child("adReviews").child(adId).child(reviewId).child("rating").setValue(rating);
 
 
     }
