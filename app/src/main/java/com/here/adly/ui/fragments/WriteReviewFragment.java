@@ -14,6 +14,7 @@ import com.here.adly.db.DatabaseFB;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 public class WriteReviewFragment extends Fragment {
@@ -33,6 +34,7 @@ public class WriteReviewFragment extends Fragment {
         databaseFB = new DatabaseFB();
         mAuth = FirebaseAuth.getInstance();
         this.dataBundle = getArguments();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Write Review");
         rbReview = view.findViewById(R.id.rb_writereview_rating);
         etMessage = view.findViewById(R.id.et_writereview_message);
         btnSubmit = view.findViewById(R.id.btn_writereview_submit);

@@ -19,6 +19,7 @@ import com.here.adly.viewmodels.FavItemViewModel;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 public class DetailsFragment extends Fragment {
@@ -39,7 +40,7 @@ public class DetailsFragment extends Fragment {
         this.databaseFB = new DatabaseFB();
         this.mAuth = FirebaseAuth.getInstance();
         this.dataBundle = getArguments();
-
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Details");
         tvAdName = view.findViewById(R.id.details_ad_name);
         btnAdFavorite = view.findViewById(R.id.btn_details_favorite);
         btnAdReviews = view.findViewById(R.id.btn_details_reviews);

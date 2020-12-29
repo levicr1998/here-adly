@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Writer"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/colorPrimary"
             android:textStyle="bold"
 android:padding="5dp" />
 
@@ -27,15 +27,16 @@ android:padding="5dp" />
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:text="Super goede ad"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/colorPrimary"
       />
 
 
         <RatingBar
             android:id="@+id/rb_item_rate"
             style="@style/Widget.AppCompat.RatingBar.Indicator"
-            android:layout_width="wrap_content"
-            android:layout_height="44dp"
+            android:layout_width="194dp"
+            android:layout_height="49dp"
+            android:progressTint="@color/colorPrimary"
             android:padding="5dp" />
 
     </LinearLayout>

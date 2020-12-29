@@ -39,6 +39,7 @@ public class FavoritesFragment extends Fragment {
         this.mAuth = FirebaseAuth.getInstance();
         recyclerView = view.findViewById(R.id.rv_favorites);
         recyclerView.setHasFixedSize(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Favorites");
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         getFavoritesList(mAuth.getUid());
 

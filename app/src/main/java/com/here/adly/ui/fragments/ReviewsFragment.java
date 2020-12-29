@@ -19,6 +19,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,6 +41,7 @@ public class ReviewsFragment extends Fragment {
         this.reviewItemList = new ArrayList<>();
         this.mAuth = FirebaseAuth.getInstance();
         this.dataBundle = getArguments();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Reviews");
         recyclerView = view.findViewById(R.id.rv_reviews);
         btnWriteReview = view.findViewById(R.id.btn_reviews_write_review);
         recyclerView.setHasFixedSize(true);

@@ -4,8 +4,7 @@
     android:layout_height="176dp"
     android:gravity="bottom"
     android:padding="16dp"
-    android:background="@color/colorAccent"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark"
+    android:background="@color/colorPrimary"
     >
 
     <TextView
