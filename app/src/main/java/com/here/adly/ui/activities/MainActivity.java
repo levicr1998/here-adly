@@ -48,7 +48,7 @@ import com.here.adly.ui.fragments.MapFragment;
 import com.here.adly.preferences.SessionManager;
 import com.here.adly.R;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, FragmentManager.OnBackStackChangedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, FragmentManager.OnBackStackChangedListener, FilterDialogFragment.OnFilterMapListener {
 
     private SessionManager sessionManager;
     private DrawerLayout drawer;
@@ -193,6 +193,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onBackStackChanged() {
         displayHomeUpOrHamburger();
+    }
+
+    @Override
+    public void onFilterMapSubmit() {
+        MapFragment mapFragment = (MapFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        mapFragment.getFilteredFeatures();
     }
 }
 

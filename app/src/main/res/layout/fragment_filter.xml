@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.activities.MainActivity">
 
     <LinearLayout
@@ -11,27 +12,60 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/tv_filter_price_name"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+          android:textFontWeight="900"
+            android:textSize="25dp"
+            android:text="Price" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/filterRV"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="0"
-                android:background="#F2F2F2" />
+        <com.google.android.material.slider.RangeSlider
+        android:valueFrom="0.0"
+        android:valueTo="500.0"
+            android:id="@+id/rs_filter_price"
+        app:values="@array/initial_slider_values"
+            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar"
+            android:layout_height="wrap_content"
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/filterValuesRV"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#ffffff" />
+            android:layout_width="match_parent"/>
 
-        </LinearLayout>
+        <TextView
+            android:id="@+id/tv_filter_type_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textFontWeight="900"
+            android:textSize="25dp"
+            android:text="Type" />
+
+        <CheckBox
+            android:id="@+id/cb_value_type_europanel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Europanel"
+            android:textFontWeight="600"
+            android:buttonTint="@color/colorPrimary"
+            android:checked="true"
+            android:textSize="15dp" />
+        <CheckBox
+            android:id="@+id/cb_value_type_abri"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Abri"
+            android:textFontWeight="600"
+            android:buttonTint="@color/colorPrimary"
+            android:checked="true"
+            android:textSize="15dp" />
+
+        <CheckBox
+            android:id="@+id/cb_value_type_twosign"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/colorPrimary"
+            android:checked="true"
+            android:text="2-Sign"
+            android:textFontWeight="600"
+            android:textSize="15dp" />
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -7,6 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.here.adly.R;
+import com.here.adly.models.Filter;
+import com.here.adly.models.TypeFilter;
+import com.here.adly.preferences.FilterPreferences;
 import com.here.adly.ui.activities.MainActivity;
 import com.here.adly.models.Feature;
 import com.here.adly.models.FeatureCollection;
@@ -58,8 +61,12 @@ public class MapFragment extends Fragment {
         mapView = view.findViewById(R.id.map_view);
         mapView.onCreate(savedInstanceState);
         featureLocationCollectionManager = new FeatureLocationCollectionManager();
-        this.getFeatures();
 
+        if (!FilterPreferences.filters.isEmpty()) {
+            getFilteredFeatures();
+        } else {
+            this.getFeatures(true, true, true);
+        }
         mapView.setOnReadyListener(new MapView.OnReadyListener() {
             @Override
             public void onMapViewReady() {
@@ -100,7 +107,7 @@ public class MapFragment extends Fragment {
 
     private void loadMapScene() {
         // Load a scene from the HERE SDK to render the map with a map scheme.
-
+        mapMarkerPlacer = new MapMarkerPlacer(getActivity(), mapView);
         mapView.getMapScene().loadScene(MapScheme.NORMAL_DAY, new MapScene.LoadSceneCallback() {
             @Override
             public void onLoadScene(@Nullable MapError mapError) {
@@ -168,14 +175,41 @@ public class MapFragment extends Fragment {
         return matchedFeature;
     }
 
-    private void getFeatures() {
+    public void getFilteredFeatures() {
+        List<String> types = ((TypeFilter) FilterPreferences.filters.get(Filter.INDEX_TYPE)).getSelected();
+        boolean aEnabled = false;
+        boolean epEnabled = false;
+        boolean tsEnabled = false;
+        if (types.contains("Abri")) {
+            aEnabled = true;
+        }
+        if (types.contains("Europanel")) {
+            epEnabled = true;
+        }
+        if (types.contains("2-Sign")) {
+            tsEnabled = true;
+        }
+        this.getFeatures(epEnabled, tsEnabled, aEnabled);
+    }
+
+    private void getFeatures(boolean epEnabled, boolean tsEnabled, boolean aEnabled) {
+        if(mapMarkerPlacer != null){
+            this.features.clear();
+            mapMarkerPlacer.removeMapMarkers();
+        }
         apiServiceHERE = featureLocationCollectionManager.setupClient();
-        Call<FeatureCollection> callEuropanel = apiServiceHERE.getFeatures(SPACE_ID_EUROPANEL);
-        executeGetFeatures(callEuropanel, SPACE_ID_EUROPANEL);
-        Call<FeatureCollection> callTwoSign = apiServiceHERE.getFeatures(SPACE_ID_TWOSIGN);
-        executeGetFeatures(callTwoSign, SPACE_ID_TWOSIGN);
-        Call<FeatureCollection> callAbri = apiServiceHERE.getFeatures(SPACE_ID_ABRI);
-        executeGetFeatures(callAbri, SPACE_ID_ABRI);
+        if (epEnabled) {
+            Call<FeatureCollection> callEuropanel = apiServiceHERE.getFeatures(SPACE_ID_EUROPANEL);
+            executeGetFeatures(callEuropanel, SPACE_ID_EUROPANEL);
+        }
+        if (tsEnabled) {
+            Call<FeatureCollection> callTwoSign = apiServiceHERE.getFeatures(SPACE_ID_TWOSIGN);
+            executeGetFeatures(callTwoSign, SPACE_ID_TWOSIGN);
+        }
+        if (aEnabled) {
+            Call<FeatureCollection> callAbri = apiServiceHERE.getFeatures(SPACE_ID_ABRI);
+            executeGetFeatures(callAbri, SPACE_ID_ABRI);
+        }
     }
 
     private void executeGetFeatures(Call<FeatureCollection> call, String spaceId) {
@@ -186,13 +220,15 @@ public class MapFragment extends Fragment {
                 }
 
                 FeatureCollection featureCollection = response.body();
+                List<Feature> collectedFeatures = new ArrayList<>();
                 List<Feature> allCollectedFeatures = featureCollection.getFeatures();
                 for (Feature feature : allCollectedFeatures) {
                     feature.setSpaceId(spaceId);
-                    features.add(feature);
+                    collectedFeatures.add(feature);
+                    features.addAll(collectedFeatures);
                 }
-                mapMarkerPlacer = new MapMarkerPlacer(getActivity(), mapView, features);
-                mapMarkerPlacer.placeMapMarkers();
+                mapMarkerPlacer.placeMapMarkers(collectedFeatures);
+
 
             }
 
@@ -219,4 +255,5 @@ public class MapFragment extends Fragment {
         super.onDestroy();
         mapView.onDestroy();
     }
+
 }

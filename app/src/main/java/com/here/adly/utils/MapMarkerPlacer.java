@@ -17,25 +17,36 @@ import java.util.List;
 public class MapMarkerPlacer {
 
     private List<Feature> features = new ArrayList<>();
+    private final List<MapMarker> mapMarkers = new ArrayList<>();
     private Context context;
     private MapView mapView;
     private static final String SPACE_NAME_EUROPANEL = "bXsuXVfP";
     private static final String SPACE_NAME_TWOSIGN = "t5tgnuZA";
     private static final String SPACE_NAME_ABRI = "OA2v5p9Z";
 
-    public MapMarkerPlacer(Context context, MapView mapView, List<Feature> features) {
-        this.features = features;
+    public MapMarkerPlacer(Context context, MapView mapView) {
         this.context = context;
         this.mapView = mapView;
     }
 
-    public void placeMapMarkers() {
+    public void placeMapMarkers(List<Feature> features) {
         for (Feature feature : features) {
+            this.features = features;
             GeoCoordinates geoCoordinates = new GeoCoordinates(feature.getGeometry().getCoordinates().get(1), feature.getGeometry().getCoordinates().get(0));
             Anchor2D anchor2D = new Anchor2D(0.5f, 1.0f);
             MapImage mapImage = chooseAdPicture(feature.getProperties().getNsComHereXyz().getSpace());
             MapMarker mapMarker = new MapMarker(geoCoordinates, mapImage, anchor2D);
-            mapView.getMapScene().addMapMarker(mapMarker);
+            this.mapMarkers.add(mapMarker);
+            this.mapView.getMapScene().addMapMarker(mapMarker);
+        }
+    }
+
+    public void removeMapMarkers(){
+        if(!this.mapMarkers.isEmpty()) {
+            for (MapMarker mapMarker : this.mapMarkers) {
+                mapView.getMapScene().removeMapMarker(mapMarker);
+            }
+            mapMarkers.clear();
         }
     }
 
