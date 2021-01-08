@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,7 +30,7 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private SessionManager sessionManager;
     private ProgressDialog progressDialog;
-    private EditText etFullName, etEmail, etPassword, etRepeatPassword;
+    private TextInputLayout etFullName, etEmail, etPassword, etRepeatPassword;
     private Button btnRegister;
 
 
@@ -38,7 +39,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         mAuth = mAuth.getInstance();
-        etEmail = findViewById(R.id.editTextLoginEmailadres);
+        etEmail = findViewById(R.id.editTextRegisterEmailadres);
         etFullName = findViewById(R.id.editTextRegisterFullname);
         etPassword = findViewById(R.id.editTextRegisterPassword);
         etRepeatPassword = findViewById(R.id.editTextRegisterRepeatPassword);
@@ -56,10 +57,10 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     private void registerUser() {
-        String email = etEmail.getText().toString();
-        String fullname = etFullName.getText().toString();
-        String password = etPassword.getText().toString();
-        String repeatPassword = etRepeatPassword.getText().toString();
+        String email = etEmail.getEditText().getText().toString();
+        String fullname = etFullName.getEditText().getText().toString();
+        String password = etPassword.getEditText().getText().toString();
+        String repeatPassword = etRepeatPassword.getEditText().getText().toString();
 
 
         if (TextUtils.isEmpty(email)) {

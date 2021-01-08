@@ -1,90 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorPrimary"
     tools:context=".ui.activities.RegisterActivity">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/register_create_account_image"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center" />
 
     <TextView
         android:id="@+id/titleRegister"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_bold"
         android:text="@string/title_name_register"
-        android:textSize="36sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.541"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.056" />
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@color/colorAccent"
+        android:textSize="25sp"
+        android:layout_margin="30dp"/>
 
-    <EditText
-        android:id="@+id/editTextRegisterFullname"
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/editTextRegisterEmailadres"
+        style="@style/LoginTextInputLayoutStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="@string/placeholder_fullname"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.341" />
-
-    <EditText
-        android:id="@+id/editTextLoginEmailadres"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        app:startIconDrawable="@drawable/ic_baseline_lock_24_white"
+        app:startIconTint="@color/colorAccent"
         android:hint="@string/placeholder_email"
-        android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.211" />
+        android:textColorHint="@color/colorAccent"
+        app:boxStrokeColor="@color/colorAccent"
+        app:counterTextColor="@color/colorAccent"
+        app:errorTextColor="@color/colorError"
+        app:errorIconTint="@color/colorError"
+        app:boxStrokeErrorColor="@color/colorError"
+        app:hintTextColor="@color/colorAccent">
 
-    <EditText
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cornerRadius="25dp"
+            android:ems="15"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/colorAccent" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/editTextRegisterFullname"
+        style="@style/LoginTextInputLayoutStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        app:startIconDrawable="@drawable/ic_baseline_lock_24_white"
+        app:startIconTint="@color/colorAccent"
+        android:hint="@string/placeholder_fullname"
+        android:textColorHint="@color/colorAccent"
+        app:boxStrokeColor="@color/colorAccent"
+        app:counterTextColor="@color/colorAccent"
+        app:errorTextColor="@color/colorError"
+        app:errorIconTint="@color/colorError"
+        app:boxStrokeErrorColor="@color/colorError"
+        app:hintTextColor="@color/colorAccent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cornerRadius="25dp"
+            android:ems="15"
+            android:inputType="textPersonName"
+            android:textColor="@color/colorAccent" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/editTextRegisterPassword"
+        style="@style/LoginTextInputLayoutStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        app:startIconDrawable="@drawable/ic_baseline_lock_24_white"
+        app:startIconTint="@color/colorAccent"
         android:hint="@string/placeholder_password"
-        android:inputType="textPassword"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.453" />
+        android:textColorHint="@color/colorAccent"
+        app:boxStrokeColor="@color/colorAccent"
+        app:counterTextColor="@color/colorAccent"
+        app:errorTextColor="@color/colorError"
+        app:errorIconTint="@color/colorError"
+        app:boxStrokeErrorColor="@color/colorError"
+        app:hintTextColor="@color/colorAccent">
 
-    <EditText
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cornerRadius="25dp"
+            android:ems="15"
+            android:inputType="textPassword"
+            android:textColor="@color/colorAccent" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/editTextRegisterRepeatPassword"
+        style="@style/LoginTextInputLayoutStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/placeholder_repeatpassword"
-        android:inputType="textPassword"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.565" />
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        app:startIconDrawable="@drawable/ic_baseline_lock_24_white"
+        app:startIconTint="@color/colorAccent"
+        android:hint="@string/placeholder_password"
+        android:textColorHint="@color/colorAccent"
+        app:boxStrokeColor="@color/colorAccent"
+        app:counterTextColor="@color/colorAccent"
+        app:errorTextColor="@color/colorError"
+        app:errorIconTint="@color/colorError"
+        app:boxStrokeErrorColor="@color/colorError"
+        app:hintTextColor="@color/colorAccent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cornerRadius="25dp"
+            android:ems="15"
+            android:inputType="textPassword"
+            android:textColor="@color/colorAccent" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/buttonRegister"
         android:layout_width="wrap_content"
+        android:padding="10dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:backgroundTint="@color/colorAccent"
+        android:fontFamily="@font/roboto_medium"
+        android:ems="8"
+        app:cornerRadius="25dp"
         android:text="@string/register_button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.692" />
+        android:textSize="20dp"
+        android:letterSpacing="0"
+        android:textAllCaps="false"
+        android:textColor="@color/colorPrimary" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

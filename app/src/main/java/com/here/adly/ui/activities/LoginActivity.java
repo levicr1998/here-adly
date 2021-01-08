@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -15,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.here.adly.R;
@@ -24,10 +26,11 @@ import com.here.adly.preferences.SessionManager;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText etEmail, etPassword;
+    private TextInputLayout tilEmail, tilPassword;
+    private TextView tvRegister;
     private FirebaseAuth mAuth;
     private ProgressDialog progressDialog;
-    private Button btnRegister, btnLogin;
+    private Button btnLogin;
     private SessionManager sessionManager;
 
     @Override
@@ -46,9 +49,10 @@ public class LoginActivity extends AppCompatActivity {
         } else {
 
             setContentView(R.layout.activity_login);
-            etEmail = findViewById(R.id.editTextLoginEmailadres);
-            etPassword = findViewById(R.id.editTextLoginPassword);
-            btnRegister = findViewById(R.id.tvLoginRegister);
+
+            tilEmail = findViewById(R.id.editTextLoginEmailadres);
+            tilPassword = findViewById(R.id.editTextLoginPassword);
+            tvRegister = findViewById(R.id.tvLoginRegister);
             mAuth = FirebaseAuth.getInstance();
             progressDialog = new ProgressDialog(this);
             btnLogin = findViewById(R.id.buttonLogin);
@@ -60,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
 
-            btnRegister.setOnClickListener(new View.OnClickListener() {
+            tvRegister.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     startRegisterActivity();
@@ -91,16 +95,17 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+
     private void LoginUser() {
-        String email = etEmail.getText().toString();
-        String password = etPassword.getText().toString();
+        String email = tilEmail.getEditText().getText().toString().trim();
+        String password = tilPassword.getEditText().getText().toString();
 
 
         if (TextUtils.isEmpty(email)) {
-            etEmail.setError("Enter your email");
+            tilEmail.setError("Enter your email");
             return;
         } else if (TextUtils.isEmpty(password)) {
-            etPassword.setError("Enter your password");
+            tilPassword.setError("Enter your password");
             return;
         }
 
