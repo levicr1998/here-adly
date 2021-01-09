@@ -30,6 +30,11 @@
     <style name="LoginTextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
         <item name="boxStrokeColor">#fff</item>
         <item name="boxStrokeWidth">2dp</item>
+
+    </style>
+
+    <style name="ChangePointerColorWhite">
+        <item name="colorControlActivated">#fff</item>
     </style>
 
 </resources>

@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -95,17 +96,38 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private Boolean isEmptyField(TextInputLayout field, String errorMessage, String fieldData) {
+        if (TextUtils.isEmpty(fieldData)) {
+            field.setError(errorMessage);
+            return true;
+        } else {
+            field.setError(null);
+            field.setErrorEnabled(false);
+            return false;
+        }
+
+    }
+
+    private Boolean isNotValidEmail(TextInputLayout field, CharSequence target, String errorMessage) {
+        if (!Patterns.EMAIL_ADDRESS.matcher(target).matches()) {
+            field.setError(errorMessage);
+            return true;
+        } else {
+            field.setError(null);
+            field.setErrorEnabled(false);
+            return false;
+        }
+    }
+
 
     private void LoginUser() {
         String email = tilEmail.getEditText().getText().toString().trim();
         String password = tilPassword.getEditText().getText().toString();
 
 
-        if (TextUtils.isEmpty(email)) {
-            tilEmail.setError("Enter your email");
+        if (isEmptyField(tilEmail, "Enter your email", email) || isNotValidEmail(tilEmail,email,"Invalid email")) {
             return;
-        } else if (TextUtils.isEmpty(password)) {
-            tilPassword.setError("Enter your password");
+        } else if (isEmptyField(tilPassword, "Enter your password", password)) {
             return;
         }
 
@@ -121,7 +143,7 @@ public class LoginActivity extends AppCompatActivity {
                     startMainActivity();
                     finish();
                 } else {
-                    Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this, "Wrong email and password combination", Toast.LENGTH_LONG).show();
                 }
                 progressDialog.dismiss();
             }

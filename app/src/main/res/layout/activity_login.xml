@@ -13,7 +13,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/login_welcome_image"
+        android:background="@drawable/ic_login_welcome_image"
         android:layout_marginTop="50dp"
         android:layout_gravity="center"/>
 
@@ -43,6 +43,7 @@
         android:textColorHint="@color/colorAccent"
         app:boxStrokeColor="@color/colorAccent"
         app:counterTextColor="@color/colorAccent"
+        android:theme="@style/ChangePointerColorWhite"
         app:cornerRadius="25dp"
         app:errorTextColor="@color/colorError"
         app:errorIconTint="@color/colorError"
@@ -52,6 +53,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textCursorDrawable="@drawable/input_cursor"
             android:ems="15"
             android:inputType="textEmailAddress"
             android:textColor="@color/colorAccent" />
@@ -69,7 +71,11 @@
         app:startIconTint="@color/colorAccent"
         android:hint="@string/placeholder_password"
         android:textColorHint="@color/colorAccent"
+        android:textCursorDrawable="@drawable/input_cursor"
+        android:theme="@style/ChangePointerColorWhite"
         app:boxStrokeColor="@color/colorAccent"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/colorAccent"
         app:counterTextColor="@color/colorAccent"
         app:errorTextColor="@color/colorError"
         app:errorIconTint="@color/colorError"
@@ -107,8 +113,6 @@
         android:id="@+id/tvLoginRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
         android:layout_gravity="center"
         android:text="@string/register_account_link"
         android:textAlignment="center"
