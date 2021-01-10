@@ -28,6 +28,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -42,8 +43,10 @@ import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.here.adly.ui.fragments.AboutFragment;
 import com.here.adly.ui.fragments.FavoritesFragment;
 import com.here.adly.ui.fragments.FilterDialogFragment;
+import com.here.adly.ui.fragments.LegendDialogFragment;
 import com.here.adly.ui.fragments.MapFragment;
 import com.here.adly.preferences.SessionManager;
 import com.here.adly.R;
@@ -127,6 +130,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragment_container, new FavoritesFragment()).commit();
                 break;
             case R.id.nav_about:
+                getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragment_container, new AboutFragment()).commit();
+                break;
             case R.id.nav_settings:
             case R.id.nav_contact:
                 item.setChecked(false);
@@ -145,12 +150,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        FragmentManager fm = getSupportFragmentManager();
         switch (item.getItemId()) {
             case R.id.toolbar_item_filter:
-                FragmentManager fm = getSupportFragmentManager();
                FilterDialogFragment filterDialogFragment = FilterDialogFragment.newInstance("Some Title");
                 filterDialogFragment.show(fm, "fragment_filter");
                 return true;
+            case R.id.toolbar_item_legend:
+                LegendDialogFragment legendDialogFragment = LegendDialogFragment.newInstance("Some Title");
+                legendDialogFragment.show(fm, "fragment_legend");
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -178,6 +187,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.setCheckedItem(R.id.nav_home);
             drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
             toggle.setDrawerIndicatorEnabled(true);
+            toolbar.setNavigationIcon(R.drawable.ic_menu);
             toggle.setToolbarNavigationClickListener(null);
             toolbarNavigationListenerIsRegistered = false;
         }

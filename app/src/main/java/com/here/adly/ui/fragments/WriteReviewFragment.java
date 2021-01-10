@@ -8,9 +8,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 import com.here.adly.R;
 import com.here.adly.db.DatabaseFB;
+import com.here.adly.viewmodels.ReviewItemViewModel;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,7 +24,7 @@ public class WriteReviewFragment extends Fragment {
 
     private Button btnSubmit;
     private RatingBar rbReview;
-    private EditText etMessage;
+    private TextInputLayout etMessage;
     private DatabaseFB databaseFB;
     private FirebaseAuth mAuth;
     private Bundle dataBundle;
@@ -34,17 +37,28 @@ public class WriteReviewFragment extends Fragment {
         databaseFB = new DatabaseFB();
         mAuth = FirebaseAuth.getInstance();
         this.dataBundle = getArguments();
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Write Review");
         rbReview = view.findViewById(R.id.rb_writereview_rating);
+        rbReview.setRating(1.0f);
         etMessage = view.findViewById(R.id.et_writereview_message);
         btnSubmit = view.findViewById(R.id.btn_writereview_submit);
         String adId = dataBundle.getString("adId");
 
         btnSubmit.setOnClickListener(view1 -> {
             int rating = (int) rbReview.getRating();
-            addUserReview(mAuth.getUid(), adId,etMessage.getText().toString(), Integer.toString(rating));
-            getFragmentManager().popBackStack();
+            addUserReview(mAuth.getUid(), adId, etMessage.getEditText().getText().toString(), Integer.toString(rating));
+            backToReviews();
         });
+
+        rbReview.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating,
+                                        boolean fromUser) {
+                if (rating < 1.0f)
+                    ratingBar.setRating(1.0f);
+            }
+        });
+
 
         return view;
     }
@@ -52,11 +66,11 @@ public class WriteReviewFragment extends Fragment {
 
     private void addUserReview(String userId, String adId, String message, String rating) {
 
-        String reviewId = databaseFB.mDatabase.child("adReviews").child(adId).push().getKey();
-        databaseFB.mDatabase.child("adReviews").child(adId).child(reviewId).child("userId").setValue(userId);
-        databaseFB.mDatabase.child("adReviews").child(adId).child(reviewId).child("message").setValue(message);
-        databaseFB.mDatabase.child("adReviews").child(adId).child(reviewId).child("rating").setValue(rating);
+        DatabaseReference newReviewReference = databaseFB.mDatabase.child("adReviews").child(adId).push();
+        newReviewReference.setValue(new ReviewItemViewModel(message, rating, userId));
+    }
 
-
+    private void backToReviews() {
+        getFragmentManager().popBackStack();
     }
 }

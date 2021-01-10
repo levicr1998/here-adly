@@ -2,6 +2,7 @@ package com.here.adly.adapters;
 
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,10 @@ import android.widget.TextView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.here.adly.R;
 import com.here.adly.db.DatabaseFB;
 import com.here.adly.ui.fragments.DetailsFragment;
@@ -27,6 +32,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class FavoritesAdapter extends FirebaseRecyclerAdapter<FavItemViewModel, FavoritesAdapter.ViewHolder> {
     private List<FavItemViewModel> favoriteViewModelList = new ArrayList<>();
+    private DatabaseReference mFavoriteReference;
 
     public FavoritesAdapter(@NonNull FirebaseRecyclerOptions<FavItemViewModel> options) {
         super(options);
@@ -34,7 +40,7 @@ public class FavoritesAdapter extends FirebaseRecyclerAdapter<FavItemViewModel, 
 
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder viewHolder, int position, @NonNull FavItemViewModel favItemViewModel) {
-favItemViewModel.setAdId(getSnapshots().getSnapshot(position).getKey());
+        favItemViewModel.setAdId(getSnapshots().getSnapshot(position).getKey());
         viewHolder.tvItemName.setText(favItemViewModel.getAdName());
         favoriteViewModelList.add(favItemViewModel);
     }
@@ -75,17 +81,28 @@ favItemViewModel.setAdId(getSnapshots().getSnapshot(position).getKey());
             cvItemCard.setOnClickListener(view -> {
                 int position = getAdapterPosition();
                 final FavItemViewModel favItem = favoriteViewModelList.get(position);
-                startFavoritesFragment(favItem.getAdName(),favItem.getAdId());
+                startFavoritesFragment(favItem.getAdName(), favItem.getAdId());
             });
 
         }
 
 
         private void removeFavoriteStatus(String userId, String adId, int position) {
-            databaseFB.mDatabase.child("userFavorite").child(userId).child(adId).child("status").setValue(false);
-            favoriteViewModelList.remove(position);
-            notifyItemRemoved(position);
-            notifyItemRangeChanged(position,favoriteViewModelList.size());
+            mFavoriteReference = databaseFB.mDatabase.child("userFavorite").child(userId).child(adId);
+            mFavoriteReference.keepSynced(true);
+            mFavoriteReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    dataSnapshot.getRef().removeValue();
+                    favoriteViewModelList.remove(position);
+                    notifyItemRemoved(position);
+                    notifyItemRangeChanged(position, favoriteViewModelList.size());
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                }
+            });
         }
 
         private void startFavoritesFragment(String featureName, String featureId) {

@@ -11,7 +11,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.here.adly.R;
 import com.here.adly.adapters.FavoritesAdapter;
+import com.here.adly.utils.MapMarkerPlacer;
 import com.here.adly.viewmodels.FavItemViewModel;
+import com.here.sdk.mapview.MapMarker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +27,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class FavoritesFragment extends Fragment {
 
-    private RecyclerView recyclerView;
+    private RecyclerView recyclerViewEuropanel, recyclerViewTwoSign, recyclerViewAbri;
     public List<FavItemViewModel> favItemList;
     private FirebaseAuth mAuth;
-    public FavoritesAdapter favoritesAdapter;
+    public FavoritesAdapter favoritesAdapterEuropanel, favoritesAdapterTwoSign, favoritesAdapterAbri;
     public DatabaseReference mFavoritesReference;
 
     @Nullable
@@ -37,36 +39,49 @@ public class FavoritesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_favorites, container, false);
         this.favItemList = new ArrayList<>();
         this.mAuth = FirebaseAuth.getInstance();
-        recyclerView = view.findViewById(R.id.rv_favorites);
-        recyclerView.setHasFixedSize(true);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Favorites");
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        getFavoritesList(mAuth.getUid());
+        recyclerViewEuropanel = view.findViewById(R.id.rv_favorites_europanel);
+        recyclerViewAbri = view.findViewById(R.id.rv_favorites_abri);
+        recyclerViewTwoSign = view.findViewById(R.id.rv_favorites_twosign);
+        setUpRecyclerView(recyclerViewEuropanel);
+        setUpRecyclerView(recyclerViewAbri);
+        setUpRecyclerView(recyclerViewTwoSign);
 
+
+        favoritesAdapterEuropanel = new FavoritesAdapter(getOptionsAdapter(mAuth.getUid(), MapMarkerPlacer.SPACE_NAME_EUROPANEL));
+        recyclerViewEuropanel.setAdapter(favoritesAdapterEuropanel);
+        favoritesAdapterAbri = new FavoritesAdapter(getOptionsAdapter(mAuth.getUid(), MapMarkerPlacer.SPACE_NAME_ABRI));
+        recyclerViewAbri.setAdapter(favoritesAdapterAbri);
+        favoritesAdapterTwoSign = new FavoritesAdapter(getOptionsAdapter(mAuth.getUid(), MapMarkerPlacer.SPACE_NAME_TWOSIGN));
+        recyclerViewTwoSign.setAdapter(favoritesAdapterTwoSign);
 
 
         return view;
     }
 
-    private void getFavoritesList(String userId) {
+    private void setUpRecyclerView(RecyclerView recyclerView) {
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    }
+
+    private FirebaseRecyclerOptions<FavItemViewModel> getOptionsAdapter(String userId, String spaceId) {
         mFavoritesReference = FirebaseDatabase.getInstance().getReference().child("userFavorite").child(userId);
-        System.out.println(mFavoritesReference);
-        FirebaseRecyclerOptions<FavItemViewModel> options = new FirebaseRecyclerOptions.Builder<FavItemViewModel>().setQuery(mFavoritesReference.orderByChild("status").equalTo(true), FavItemViewModel.class).build();
-        favoritesAdapter = new FavoritesAdapter(options);
-        recyclerView.setAdapter(favoritesAdapter);
-
-
+        FirebaseRecyclerOptions<FavItemViewModel> options = new FirebaseRecyclerOptions.Builder<FavItemViewModel>().setQuery(mFavoritesReference.orderByChild("spaceId").equalTo(spaceId), FavItemViewModel.class).build();
+        return options;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        favoritesAdapter.startListening();
+        favoritesAdapterEuropanel.startListening();
+        favoritesAdapterAbri.startListening();
+        favoritesAdapterTwoSign.startListening();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        favoritesAdapter.stopListening();
+        favoritesAdapterEuropanel.stopListening();
+        favoritesAdapterAbri.stopListening();
+        favoritesAdapterTwoSign.stopListening();
     }
 }

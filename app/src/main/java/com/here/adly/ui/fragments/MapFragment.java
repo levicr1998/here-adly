@@ -112,7 +112,7 @@ public class MapFragment extends Fragment {
             @Override
             public void onLoadScene(@Nullable MapError mapError) {
                 if (mapError == null) {
-                    double distanceInMeters = 1000 * 10;
+                    double distanceInMeters = 1000 * 4;
                     mapView.getCamera().lookAt(
                             new GeoCoordinates(51.44416, 5.4788), distanceInMeters);
 

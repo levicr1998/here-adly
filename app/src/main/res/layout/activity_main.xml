@@ -24,12 +24,11 @@
 
         </FrameLayout>
 
-        <androidx.appcompat.widget.Toolbar
+        <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
-            android:theme="@style/ActionBarTitle" />
+       />
 
     </FrameLayout>
 

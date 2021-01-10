@@ -15,6 +15,12 @@ public class ReviewItemViewModel {
         this.rating = rating;
     }
 
+    public ReviewItemViewModel(String message, String rating, String userId) {
+        this.message = message;
+        this.rating = rating;
+        this.userId = userId;
+    }
+
     public String getMessage() {
         return message;
     }

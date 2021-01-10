@@ -1,19 +1,27 @@
 package com.here.adly.ui.fragments;
 
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RatingBar;
+import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.here.adly.R;
 import com.here.adly.adapters.ReviewsAdapter;
+import com.here.adly.viewmodels.FavItemViewModel;
 import com.here.adly.viewmodels.ReviewItemViewModel;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +37,8 @@ public class ReviewsFragment extends Fragment {
     private RecyclerView recyclerView;
     public List<ReviewItemViewModel> reviewItemList;
     private Button btnWriteReview;
+    private TextView tvAverageScore, tvAmountReviewers;
+    private RatingBar rbAverageScore;
     private FirebaseAuth mAuth;
     public ReviewsAdapter reviewsAdapter;
     public DatabaseReference mReviewsReference;
@@ -41,13 +51,17 @@ public class ReviewsFragment extends Fragment {
         this.reviewItemList = new ArrayList<>();
         this.mAuth = FirebaseAuth.getInstance();
         this.dataBundle = getArguments();
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Reviews");
         recyclerView = view.findViewById(R.id.rv_reviews);
+        tvAverageScore = view.findViewById(R.id.tv_average_review_score);
+        tvAmountReviewers = view.findViewById(R.id.tv_amount_reviews);
+        rbAverageScore = view.findViewById(R.id.rb_average_review_score);
         btnWriteReview = view.findViewById(R.id.btn_reviews_write_review);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         String adId = dataBundle.getString("adId");
-        getReviewsList(adId);
+        mReviewsReference = FirebaseDatabase.getInstance().getReference().child("adReviews").child(adId);
+        getReviewsList();
+        getReviewsScoreAndCount();
 
         btnWriteReview.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,15 +73,46 @@ public class ReviewsFragment extends Fragment {
         return view;
     }
 
-    private void getReviewsList(String adId) {
-
-        mReviewsReference = FirebaseDatabase.getInstance().getReference().child("adReviews").child(adId);
+    private void getReviewsList() {
         FirebaseRecyclerOptions<ReviewItemViewModel> options = new FirebaseRecyclerOptions.Builder<ReviewItemViewModel>().setQuery(mReviewsReference, ReviewItemViewModel.class).build();
-        for (ReviewItemViewModel item : options.getSnapshots()){
+        for (ReviewItemViewModel item : options.getSnapshots()) {
             System.out.println(item.toString());
         }
         reviewsAdapter = new ReviewsAdapter(options);
         recyclerView.setAdapter(reviewsAdapter);
+    }
+
+    private void getReviewsScoreAndCount() {
+        mReviewsReference.keepSynced(true);
+        mReviewsReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                double reviewScoreTotal = 0;
+                double reviewScore = 0;
+                int reviewCount = 0;
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    ReviewItemViewModel review = postSnapshot.getValue(ReviewItemViewModel.class);
+                    reviewCount++;
+                    System.out.println(review.getRating());
+                    reviewScoreTotal += Double.parseDouble(review.getRating());
+                }
+                if (reviewCount > 0) {
+                    reviewScore = reviewScoreTotal / reviewCount;
+                }
+                DecimalFormat decimalFormat = new DecimalFormat("#.#");
+                String reviewScoreResult = decimalFormat.format(reviewScore);
+
+                rbAverageScore.setRating(Float.parseFloat(reviewScoreResult));
+                tvAverageScore.setText(reviewScoreResult);
+                String amountReviewers = "based on " + reviewCount + " reviews";
+                tvAmountReviewers.setText(amountReviewers);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                System.out.println("Fout");
+            }
+        });
     }
 
     @Override
@@ -82,11 +127,12 @@ public class ReviewsFragment extends Fragment {
         reviewsAdapter.stopListening();
     }
 
+
     private void startWriteReviewFragment(String adId) {
         WriteReviewFragment writeReviewFragment = new WriteReviewFragment();
         Bundle bundle = new Bundle();
         bundle.putString("adId", adId);
         writeReviewFragment.setArguments(bundle);
-        this.getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragment_container, writeReviewFragment ).commit();
+        this.getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragment_container, writeReviewFragment).commit();
     }
 }

@@ -13,7 +13,14 @@
     <string name="register_account_link">New here? <b> Sign up</b></string>
     <string name="login_link"> Already have an account? <b> Sign in </b></string>
     <string name="register_additional_info"> (This information is used to contact you) </string>
-
+    <string name="legend_name"> Legend </string>
+    <string name="europanel_name"> Europanel </string>
+    <string name="twosign_name"> 2-Sign </string>
+    <string name="abri_name"> Abri </string>
+    <string name="europanel_description"> Europanels are double-sided rotating surfaces which are illuminated from within. 170 units are situated along the busiest roads in the city of Eindhoven. </string>
+    <string name="twosign_description"> 2-signs are double-sided A0 signs that are mounted on mostly lampposts in a municipality. 2-Signs are signs that are placed flexible in a municipality and the costs to advertise with a 2-Sign is relatively low. </string>
+    <string name="abri_description"> Abri is the most common ad format in the outdoor advertising industry. You see this form of advertising everywhere on the street. There are different types of Abri’s: bus shelters, mupis (separate bus shelters along the road), parking shelters in parking garages, digital bus shelters and station shelters. </string>
+    <string name="aboutus_description"> Adly positions itself as the One-Stop Service Application for people that would like to advertise in their desired location. \n \n Adly offers a range of advertisement objects including: Europanels, 2-Signs and Abri’s. \n \n Explore our service and start advertising today! </string>
     <string name="navigation_drawer_open"> Open navigation drawer</string>
     <string name="navigation_drawer_close"> CLose navigation drawer</string>
     <!-- Strings used for fragments for navigation -->

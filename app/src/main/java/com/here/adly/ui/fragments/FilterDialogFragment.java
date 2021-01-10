@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 
 import com.google.android.material.slider.RangeSlider;
 import com.here.adly.R;
@@ -27,6 +28,7 @@ public class FilterDialogFragment extends DialogFragment {
 
     RangeSlider rangeSliderPrice;
     CheckBox cbTypeEuropanel, cbTypeAbri, cbTypeTwoSign;
+    ImageView ivClose;
     OnFilterMapListener mCallback;
 
     public interface OnFilterMapListener {
@@ -70,6 +72,7 @@ public class FilterDialogFragment extends DialogFragment {
         cbTypeAbri = view.findViewById(R.id.cb_value_type_abri);
         cbTypeEuropanel = view.findViewById(R.id.cb_value_type_europanel);
         cbTypeTwoSign = view.findViewById(R.id.cb_value_type_twosign);
+        ivClose = view.findViewById(R.id.iv_close_filter);
         initControls();
 
         clearB.setOnClickListener(new View.OnClickListener() {
@@ -92,6 +95,13 @@ public class FilterDialogFragment extends DialogFragment {
                 setRangeSliderPrice();
                 mCallback.onFilterMapSubmit();
 
+                dismiss();
+            }
+        });
+
+        ivClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 dismiss();
             }
         });

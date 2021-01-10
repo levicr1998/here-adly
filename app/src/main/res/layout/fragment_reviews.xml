@@ -1,23 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:paddingTop="?attr/actionBarSize"
     android:background="@color/colorPrimary">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_bold"
+        android:textSize="30dp"
+        android:layout_marginLeft="20dp"
+        android:textColor="@color/colorAccent"
+        android:text="Reviews" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:textColor="@color/colorAccent"
+        android:textSize="20dp"
+android:text="Overall rating"
+        android:gravity="center"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_average_review_score"
+        android:textColor="@color/colorAccent"
+        android:textSize="35dp"
+        android:fontFamily="@font/roboto_bold"
+        android:text="5"
+        android:gravity="center"
+        />
+
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/rb_average_review_score"
+        android:isIndicator="true"
+        android:layout_gravity="center"
+        android:clickable="false" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorAccent"
+        android:id="@+id/tv_amount_reviews"
+        android:textSize="15dp"
+        android:fontFamily="@font/roboto_light"
+        android:text="based on 3 reviews"
+        android:gravity="center"
+        />
+
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:backgroundTint="@color/colorAccent"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="?android:attr/listDivider" />
+
+    <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_reviews"
+                android:scrollbars="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="300dp" />
 
 
     <Button
         android:id="@+id/btn_reviews_write_review"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Write review" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_reviews"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:text="Write review"
+        android:padding="10dp"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:backgroundTint="@color/colorAccent"
+        android:fontFamily="@font/roboto_medium"
+        android:ems="8"
+        app:cornerRadius="25dp"
+        android:textSize="20dp"
+        android:letterSpacing="0"
+        android:textAllCaps="false"
+        android:textColor="@color/colorPrimary"
         />
-
-
 
 </LinearLayout>

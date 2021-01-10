@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:backgroundTint="@color/colorPrimary"
     android:id="@+id/cv_review_item_card">
 
     <LinearLayout
@@ -11,15 +12,36 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="15dp">
-
+<LinearLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="5">
         <TextView
             android:id="@+id/tv_review_item_writer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="5dp"
             android:text="Writer"
-            android:textColor="@color/colorPrimary"
+            android:gravity="left"
+            android:textColor="@color/colorAccent"
             android:textStyle="bold"
-android:padding="5dp" />
+            android:layout_weight="4.75"
+         />
+
+    <RatingBar
+        android:id="@+id/rb_item_rate"
+        style="@style/Widget.AppCompat.RatingBar.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        android:isIndicator="true"
+        android:layout_gravity="end"
+        android:layout_weight="0.25"
+        android:padding="5dp"
+        android:progressTint="@color/colorAccent" />
+
+</LinearLayout>
 
         <TextView
             android:id="@+id/tv_review_item_message"
@@ -27,17 +49,7 @@ android:padding="5dp" />
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:text="Super goede ad"
-            android:textColor="@color/colorPrimary"
-      />
-
-
-        <RatingBar
-            android:id="@+id/rb_item_rate"
-            style="@style/Widget.AppCompat.RatingBar.Indicator"
-            android:layout_width="194dp"
-            android:layout_height="49dp"
-            android:progressTint="@color/colorPrimary"
-            android:padding="5dp" />
+            android:textColor="@color/colorAccent" />
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>
