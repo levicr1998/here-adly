@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_items, menu);
 
         return true;
@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentManager fm = getSupportFragmentManager();
         switch (item.getItemId()) {
             case R.id.toolbar_item_filter:
-               FilterDialogFragment filterDialogFragment = FilterDialogFragment.newInstance("Some Title");
+                FilterDialogFragment filterDialogFragment = FilterDialogFragment.newInstance("Some Title");
                 filterDialogFragment.show(fm, "fragment_filter");
                 return true;
             case R.id.toolbar_item_legend:
@@ -168,9 +168,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void displayHomeUpOrHamburger() {
         boolean upBtn = getSupportFragmentManager().getBackStackEntryCount() > 0;
         if (upBtn) {
-           toolbar.getMenu().clear();
+            toolbar.getMenu().clear();
             drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             toggle.setDrawerIndicatorEnabled(false);
+                toolbar.setNavigationIcon(R.drawable.ic_back_button);
+
             if (!toolbarNavigationListenerIsRegistered) {
                 toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
                     @Override
@@ -183,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             MenuInflater menuInflater = getMenuInflater();
             getSupportActionBar().setTitle("");
-           menuInflater.inflate(R.menu.toolbar_items, toolbar.getMenu());
+            menuInflater.inflate(R.menu.toolbar_items, toolbar.getMenu());
             navigationView.setCheckedItem(R.id.nav_home);
             drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
             toggle.setDrawerIndicatorEnabled(true);
@@ -193,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
 
-}
+    }
 
     private void startLoginActivity() {
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);

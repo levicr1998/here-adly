@@ -1,12 +1,18 @@
 package com.here.adly.ui.fragments;
 
+import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -16,7 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.here.adly.R;
 import com.here.adly.db.DatabaseFB;
 import com.here.adly.viewmodels.FavItemViewModel;
-
+import androidx.appcompat.widget.Toolbar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,13 +31,15 @@ import androidx.fragment.app.Fragment;
 public class DetailsFragment extends Fragment {
 
     private TextView tvAdName;
-    private Button btnAdFavorite, btnAdReviews;
+    private Button btnAdFavorite, btnAdReviews, btnBook;
 
     private DatabaseFB databaseFB;
     private DatabaseReference mFavoritesReference;
     private FavItemViewModel favItemViewModel;
+    private RatingBar ratingBar;
     private FirebaseAuth mAuth;
     private Bundle dataBundle;
+
 
     @Nullable
     @Override
@@ -41,8 +49,12 @@ public class DetailsFragment extends Fragment {
         this.mAuth = FirebaseAuth.getInstance();
         this.dataBundle = getArguments();
         tvAdName = view.findViewById(R.id.details_ad_name);
+        btnBook = view.findViewById(R.id.btn_details_book);
         btnAdFavorite = view.findViewById(R.id.btn_details_favorite);
         btnAdReviews = view.findViewById(R.id.btn_details_reviews);
+        ratingBar = view.findViewById(R.id.rb_details_item_rate);
+
+        ratingBar.setRating(5F);
         getDetailsAdvertisement();
         btnAdFavorite.setOnClickListener(view1 -> {
             if (favItemViewModel.getStatus() == true) {
@@ -56,6 +68,26 @@ public class DetailsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 startReviewsFragment(dataBundle.getString("adId"));
+            }
+        });
+
+        btnBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
+
+
+                builder.setTitle(getResources().getString(R.string.book_notification_title))
+                        .setMessage(getResources().getString(R.string.book_notification_message))
+                        .setPositiveButton(getResources().getString(R.string.book_notification_action_ok), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+
+                            ;
+                        }).show();
             }
         });
 

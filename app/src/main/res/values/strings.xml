@@ -13,6 +13,9 @@
     <string name="register_account_link">New here? <b> Sign up</b></string>
     <string name="login_link"> Already have an account? <b> Sign in </b></string>
     <string name="register_additional_info"> (This information is used to contact you) </string>
+    <string name="book_notification_title"> Reservation succesful!</string>
+    <string name="book_notification_message"> You have successfully made a reservation for this advertisement spot. \n \nWe will contact you with more information soon. \n \nThank you for your interest in Adly!</string>
+    <string name="book_notification_action_ok"> Ok</string>
     <string name="legend_name"> Legend </string>
     <string name="europanel_name"> Europanel </string>
     <string name="twosign_name"> 2-Sign </string>

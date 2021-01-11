@@ -22,6 +22,8 @@ import com.here.adly.viewmodels.FavItemViewModel;
 import com.here.adly.viewmodels.ReviewItemViewModel;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,10 +101,21 @@ public class ReviewsFragment extends Fragment {
                 if (reviewCount > 0) {
                     reviewScore = reviewScoreTotal / reviewCount;
                 }
-                DecimalFormat decimalFormat = new DecimalFormat("#.#");
-                String reviewScoreResult = decimalFormat.format(reviewScore);
 
-                rbAverageScore.setRating(Float.parseFloat(reviewScoreResult));
+
+                DecimalFormat decimalFormat = new DecimalFormat("#.#");
+
+                String reviewScoreResult = decimalFormat.format(reviewScore);
+                DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+                symbols.setDecimalSeparator(',');
+                decimalFormat.setDecimalFormatSymbols(symbols);
+                try {
+                    Float reviewScoreResultFloat = decimalFormat.parse(reviewScoreResult).floatValue();
+                    rbAverageScore.setRating(reviewScoreResultFloat);
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 tvAverageScore.setText(reviewScoreResult);
                 String amountReviewers = "based on " + reviewCount + " reviews";
                 tvAmountReviewers.setText(amountReviewers);

@@ -1,49 +1,186 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:paddingTop="?attr/actionBarSize"
-    android:background="@color/colorError">
-    
+    android:background="@color/colorPrimary">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_ellipse_details_screen"
+        android:orientation="vertical"
+        >
+<ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:background="@drawable/picture_europanel_details_screen"
+    android:layout_gravity="center"
+    />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_margin="10dp"
+        android:layout_height="wrap_content"
+        app:cornerRadius="25dp"
+        android:orientation="vertical"
+        android:background="@drawable/shape_details_info">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        <TextView
+            android:id="@+id/details_ad_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_medium"
+            android:textSize="22dp"
+        android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="0.6"
+            android:textColor="@color/colorPrimary"
+            android:text="€100 p/week" />
+
+            <Button
+                android:id="@+id/btn_details_favorite"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+             android:layout_margin="5dp"
+                android:background="@drawable/ic_favorite" />
+        </LinearLayout>
     <TextView
         android:id="@+id/details_ad_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:fontFamily="@font/roboto_bold"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginBottom="5dp"
         android:text="Naam Advertentie"
-        android:textSize="25sp" />
+        android:textSize="25dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.chip.ChipGroup
+            app:singleLine="true"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_width="match_parent">
+
+
+
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/ThinnerChip"
+                app:chipIcon="@drawable/ic_baseline_location_on_24"
+                app:closeIconEnabled="false"
+                android:text="Europanel"
+                android:fontFamily="@font/roboto_bold"
+                app:chipMinTouchTargetSize="0dp"
+                android:textColor="@color/colorAccent"
+                android:paddingLeft="5dp"
+               android:checkable="false"
+                android:clickable="false"
+               app:chipBackgroundColor="@color/colorPrimary" />
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:chipMinTouchTargetSize="0dp"
+                    app:closeIconEnabled="false"
+                    style="@style/ThinnerChip"
+                    android:paddingLeft="5dp"
+                    app:chipIcon="@drawable/ic_baseline_event_available_24"
+                    android:text="Available"
+                    android:fontFamily="@font/roboto_bold"
+                    android:textColor="@color/colorAccent"
+                    android:checkable="false"
+                    android:clickable="false"
+                    app:chipBackgroundColor="@color/colorPrimary" />
+
+            </com.google.android.material.chip.ChipGroup>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            >
+
+            <RatingBar
+                android:id="@+id/rb_details_item_rate"
+                style="@style/Widget.AppCompat.RatingBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="true"
+                android:layout_gravity="center_vertical"
+                android:numStars="5"
+                android:progressTint="@color/colorPrimary" />
+            <TextView
+                android:id="@+id/tv_review_item_writer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="10dp"
+                android:layout_gravity="center_vertical"
+                android:text="Average rating"
+                android:fontFamily="@font/roboto_light"
+                android:textColor="@color/colorPrimary"
+                />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginVertical="10dp"
+            android:text="@string/europanel_description">
+
+        </TextView>
 
     <Button
-        android:id="@+id/btn_details_favorite"
-        android:layout_width="50sp"
-        android:layout_height="50sp"
-        android:layout_marginEnd="20dp"
-        android:background="@drawable/ic_favorite"
-        android:layout_gravity="end"/>
-
-    <TextView
-        android:id="@+id/details_ad_price"
+        android:id="@+id/btn_details_book"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="11dp"
-        android:text="€100"
-        android:textSize="25sp" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="97dp"
-        android:layout_marginTop="162dp"
-        android:text="Book now"></Button>
+        android:text="Book now"
+        android:padding="10dp"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:fontFamily="@font/roboto_medium"
+        android:ems="8"
+        app:cornerRadius="25dp"
+        android:textSize="20dp"
+        android:letterSpacing="0"
+        android:textAllCaps="false"
+        android:textColor="@color/colorAccent"
+        ></Button>
 
     <Button
         android:id="@+id/btn_details_reviews"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Reviews" />
-
+        android:text="Reviews"
+        android:padding="10dp"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:fontFamily="@font/roboto_medium"
+        android:ems="8"
+        app:cornerRadius="25dp"
+        android:textSize="20dp"
+        android:letterSpacing="0"
+        android:textAllCaps="false"
+        android:textColor="@color/colorAccent"
+        />
+    </LinearLayout>
 
 </LinearLayout>
