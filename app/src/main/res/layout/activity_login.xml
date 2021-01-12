@@ -13,7 +13,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/ic_login_welcome_image"
+        android:background="@drawable/picture_login"
         android:layout_marginTop="50dp"
         android:layout_gravity="center"/>
 
@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="10dp"
-        app:startIconDrawable="@drawable/ic_baseline_account_circle_24_white"
+        app:startIconDrawable="@drawable/ic_account"
         app:startIconTint="@color/colorAccent"
         android:hint="@string/placeholder_email"
         android:textColorHint="@color/colorAccent"
@@ -53,7 +53,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textCursorDrawable="@drawable/input_cursor"
+            android:textCursorDrawable="@drawable/shape_cursor"
             android:ems="15"
             android:inputType="textEmailAddress"
             android:textColor="@color/colorAccent" />
@@ -67,11 +67,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="10dp"
-        app:startIconDrawable="@drawable/ic_baseline_lock_24_white"
+        app:startIconDrawable="@drawable/ic_lock"
         app:startIconTint="@color/colorAccent"
         android:hint="@string/placeholder_password"
         android:textColorHint="@color/colorAccent"
-        android:textCursorDrawable="@drawable/input_cursor"
+        android:textCursorDrawable="@drawable/shape_cursor"
         android:theme="@style/ChangePointerColorWhite"
         app:boxStrokeColor="@color/colorAccent"
         app:passwordToggleEnabled="true"

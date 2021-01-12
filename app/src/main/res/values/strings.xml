@@ -17,6 +17,7 @@
     <string name="book_notification_message"> You have successfully made a reservation for this advertisement spot. \n \nWe will contact you with more information soon. \n \nThank you for your interest in Adly!</string>
     <string name="book_notification_action_ok"> Ok</string>
     <string name="legend_name"> Legend </string>
+    <string name="filters_name"> Filters</string>
     <string name="europanel_name"> Europanel </string>
     <string name="twosign_name"> 2-Sign </string>
     <string name="abri_name"> Abri </string>

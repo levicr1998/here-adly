@@ -9,14 +9,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/ic_ellipse_details_screen"
+        android:background="@drawable/shape_ellipse"
         android:orientation="vertical"
         >
 <ImageView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
-    android:background="@drawable/picture_europanel_details_screen"
+    android:background="@drawable/picture_europanel"
     android:layout_gravity="center"
     />
     </LinearLayout>
@@ -27,7 +27,8 @@
         android:layout_height="wrap_content"
         app:cornerRadius="25dp"
         android:orientation="vertical"
-        android:background="@drawable/shape_details_info">
+        android:backgroundTint="@color/colorAccent"
+        android:background="@drawable/shape_square_rounded_corners">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -78,7 +79,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/ThinnerChip"
-                app:chipIcon="@drawable/ic_baseline_location_on_24"
+                app:chipIcon="@drawable/ic_location"
                 app:closeIconEnabled="false"
                 android:text="Europanel"
                 android:fontFamily="@font/roboto_bold"
@@ -96,7 +97,7 @@
                     app:closeIconEnabled="false"
                     style="@style/ThinnerChip"
                     android:paddingLeft="5dp"
-                    app:chipIcon="@drawable/ic_baseline_event_available_24"
+                    app:chipIcon="@drawable/ic_available"
                     android:text="Available"
                     android:fontFamily="@font/roboto_bold"
                     android:textColor="@color/colorAccent"
