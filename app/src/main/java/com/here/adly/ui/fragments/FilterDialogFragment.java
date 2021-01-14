@@ -82,7 +82,7 @@ public class FilterDialogFragment extends DialogFragment {
         sliderLocation.setLabelFormatter(value -> {
             DecimalFormat decimalFormat = new DecimalFormat("#");
             String distanceValue = (decimalFormat.format(value));
-            String formattedValue =  distanceValue + "KM near me";
+            String formattedValue = distanceValue + "KM near me";
             return formattedValue;
         });
         rangeSliderPrice.setLabelFormatter(value -> {
@@ -147,14 +147,14 @@ public class FilterDialogFragment extends DialogFragment {
         filterData.setSelected(selected);
     }
 
-    private void setLocationFilterComponents(Slider sliderLocation){
+    private void setLocationFilterComponents(Slider sliderLocation) {
         final LocationFilter filterData = (LocationFilter) FilterPreferences.filters.get(Filter.INDEX_LOCATION);
         String selectedPostalCode = filterData.getSelectedPostalCode();
         int selectedKiloMetersNearMe = filterData.getSelectedKiloMetersNearMe();
 
-        if(selectedPostalCode.isEmpty()){
+        if (selectedPostalCode.isEmpty()) {
             tilLocation.getEditText().setText("");
-        } else{
+        } else {
             tilLocation.getEditText().setText(selectedPostalCode);
         }
 
@@ -211,12 +211,12 @@ public class FilterDialogFragment extends DialogFragment {
             FilterPreferences.filters.put(Filter.INDEX_PRICE, new PriceFilter("Price", selectedPrices));
         }
 
-        if(!FilterPreferences.filters.containsKey(Filter.INDEX_AVAILABLE)){
+        if (!FilterPreferences.filters.containsKey(Filter.INDEX_AVAILABLE)) {
             boolean isSelected = false;
-            FilterPreferences.filters.put(Filter.INDEX_AVAILABLE, new AvailableFilter("Available",isSelected));
+            FilterPreferences.filters.put(Filter.INDEX_AVAILABLE, new AvailableFilter("Available", isSelected));
         }
 
-        if (!FilterPreferences.filters.containsKey(Filter.INDEX_LOCATION)){
+        if (!FilterPreferences.filters.containsKey(Filter.INDEX_LOCATION)) {
             String selectedPostalCode = "";
             int selectedKiloMetersNearMe = 500;
             FilterPreferences.filters.put(Filter.INDEX_LOCATION, new LocationFilter("Location", selectedPostalCode, selectedKiloMetersNearMe));

@@ -41,8 +41,8 @@ public class MapMarkerPlacer {
         }
     }
 
-    public void removeMapMarkers(){
-        if(!this.mapMarkers.isEmpty()) {
+    public void removeMapMarkers() {
+        if (!this.mapMarkers.isEmpty()) {
             for (MapMarker mapMarker : this.mapMarkers) {
                 mapView.getMapScene().removeMapMarker(mapMarker);
             }

@@ -1,6 +1,5 @@
 package com.here.adly.models;
 
-import java.util.List;
 
 public class AvailableFilter extends Filter {
 

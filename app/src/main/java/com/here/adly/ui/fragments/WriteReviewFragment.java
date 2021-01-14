@@ -49,14 +49,9 @@ public class WriteReviewFragment extends Fragment {
             backToReviews();
         });
 
-        rbReview.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating,
-                                        boolean fromUser) {
-                if (rating < 1.0f)
-                    ratingBar.setRating(1.0f);
-            }
+        rbReview.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
+            if (rating < 1.0f)
+                ratingBar.setRating(1.0f);
         });
 
 

@@ -2,7 +2,6 @@ package com.here.adly.adapters;
 
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,9 +39,9 @@ public class FavoritesAdapter extends FirebaseRecyclerAdapter<FavItemViewModel, 
 
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder viewHolder, int position, @NonNull FavItemViewModel favItemViewModel) {
-            favItemViewModel.setAdId(getSnapshots().getSnapshot(position).getKey());
-            viewHolder.tvItemName.setText(favItemViewModel.getAdName());
-            favoriteViewModelList.add(favItemViewModel);
+        favItemViewModel.setAdId(getSnapshots().getSnapshot(position).getKey());
+        viewHolder.tvItemName.setText(favItemViewModel.getAdName());
+        favoriteViewModelList.add(favItemViewModel);
 
     }
 
@@ -50,7 +49,7 @@ public class FavoritesAdapter extends FirebaseRecyclerAdapter<FavItemViewModel, 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fav_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_fav, parent, false);
 
         return new FavoritesAdapter.ViewHolder(view);
     }

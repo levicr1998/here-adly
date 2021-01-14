@@ -1,6 +1,5 @@
 package com.here.adly.models;
 
-import java.util.List;
 
 public abstract class Filter {
     public static Integer INDEX_PRICE = 0;

@@ -6,7 +6,7 @@ public class DatabaseFB {
     public DatabaseReference mDatabase;
 
 
-    public DatabaseFB(){
+    public DatabaseFB() {
         mDatabase = com.google.firebase.database.FirebaseDatabase.getInstance().getReference();
     }
 }

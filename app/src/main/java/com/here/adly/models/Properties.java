@@ -21,6 +21,14 @@ public class Properties {
     @Expose
     private String description;
 
+    @SerializedName("available")
+    @Expose
+    private boolean available;
+
+    @SerializedName("price")
+    @Expose
+    private int price;
+
     public String getName() {
         return name;
     }

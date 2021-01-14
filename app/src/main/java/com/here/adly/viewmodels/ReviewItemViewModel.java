@@ -6,7 +6,7 @@ public class ReviewItemViewModel {
     private String rating;
     private String userId;
 
-    public ReviewItemViewModel(){
+    public ReviewItemViewModel() {
 
     }
 

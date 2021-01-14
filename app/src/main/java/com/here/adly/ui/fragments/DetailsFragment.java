@@ -103,7 +103,7 @@ public class DetailsFragment extends Fragment {
                     favStatus = true;
                 }
 
-                if(isAdded()){
+                if (isAdded()) {
                     setStatusButtonColor(favStatus);
                 }
             }

@@ -8,14 +8,12 @@ import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.here.adly.R;
 import com.here.adly.db.DatabaseFB;
-import com.here.adly.viewmodels.FavItemViewModel;
 import com.here.adly.viewmodels.ReviewItemViewModel;
 
 import androidx.annotation.NonNull;
@@ -41,9 +39,9 @@ public class ReviewsAdapter extends FirebaseRecyclerAdapter<ReviewItemViewModel,
     @NonNull
     @Override
     public ReviewsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-       View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.review_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_review, parent, false);
 
-       return new ReviewsAdapter.ViewHolder(view);
+        return new ReviewsAdapter.ViewHolder(view);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -66,7 +64,7 @@ public class ReviewsAdapter extends FirebaseRecyclerAdapter<ReviewItemViewModel,
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    String authorName  = snapshot.getValue(String.class);
+                    String authorName = snapshot.getValue(String.class);
                     viewHolder.tvReviewWriter.setText(authorName);
                 }
 
