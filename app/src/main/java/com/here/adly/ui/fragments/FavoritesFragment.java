@@ -11,16 +11,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.here.adly.R;
 import com.here.adly.adapters.FavoritesAdapter;
+import com.here.adly.ui.activities.MainActivity;
 import com.here.adly.utils.MapMarkerPlacer;
 import com.here.adly.viewmodels.FavItemViewModel;
-import com.here.sdk.mapview.MapMarker;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -64,7 +63,7 @@ public class FavoritesFragment extends Fragment {
     }
 
     private FirebaseRecyclerOptions<FavItemViewModel> getOptionsAdapter(String userId, String spaceId) {
-        mFavoritesReference = FirebaseDatabase.getInstance().getReference().child("userFavorite").child(userId);
+        mFavoritesReference = FirebaseDatabase.getInstance().getReference().child("userFavorites").child(userId);
         FirebaseRecyclerOptions<FavItemViewModel> options = new FirebaseRecyclerOptions.Builder<FavItemViewModel>().setQuery(mFavoritesReference.orderByChild("spaceId").equalTo(spaceId), FavItemViewModel.class).build();
         return options;
     }
@@ -75,6 +74,7 @@ public class FavoritesFragment extends Fragment {
         favoritesAdapterEuropanel.startListening();
         favoritesAdapterAbri.startListening();
         favoritesAdapterTwoSign.startListening();
+        ((MainActivity) getActivity()).loadingDialog.stopLoading();
     }
 
     @Override

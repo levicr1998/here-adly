@@ -45,6 +45,7 @@ import com.here.adly.ui.fragments.AboutFragment;
 import com.here.adly.ui.fragments.FavoritesFragment;
 import com.here.adly.ui.fragments.FilterDialogFragment;
 import com.here.adly.ui.fragments.LegendDialogFragment;
+import com.here.adly.ui.fragments.LoadingDialog;
 import com.here.adly.ui.fragments.MapFragment;
 import com.here.adly.preferences.SessionManager;
 import com.here.adly.R;
@@ -59,13 +60,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private boolean toolbarNavigationListenerIsRegistered;
     private NavigationView navigationView;
     private FirebaseAuth mAuth;
+    public LoadingDialog loadingDialog;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
-
+        loadingDialog = new LoadingDialog(this);
         setContentView(R.layout.activity_main);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -125,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.nav_favorites:
+                this.loadingDialog.startLoading();
                 getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragment_container, new FavoritesFragment()).commit();
                 break;
             case R.id.nav_about:
@@ -169,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             toolbar.getMenu().clear();
             drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             toggle.setDrawerIndicatorEnabled(false);
-                toolbar.setNavigationIcon(R.drawable.ic_toolbar_back);
+            toolbar.setNavigationIcon(R.drawable.ic_toolbar_back);
 
             if (!toolbarNavigationListenerIsRegistered) {
                 toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
@@ -207,6 +210,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onFilterMapSubmit() {
+        this.loadingDialog.stopLoading();
         MapFragment mapFragment = (MapFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         mapFragment.getFilteredFeatures();
     }

@@ -40,9 +40,10 @@ public class FavoritesAdapter extends FirebaseRecyclerAdapter<FavItemViewModel, 
 
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder viewHolder, int position, @NonNull FavItemViewModel favItemViewModel) {
-        favItemViewModel.setAdId(getSnapshots().getSnapshot(position).getKey());
-        viewHolder.tvItemName.setText(favItemViewModel.getAdName());
-        favoriteViewModelList.add(favItemViewModel);
+            favItemViewModel.setAdId(getSnapshots().getSnapshot(position).getKey());
+            viewHolder.tvItemName.setText(favItemViewModel.getAdName());
+            favoriteViewModelList.add(favItemViewModel);
+
     }
 
     @NonNull
@@ -88,7 +89,7 @@ public class FavoritesAdapter extends FirebaseRecyclerAdapter<FavItemViewModel, 
 
 
         private void removeFavoriteStatus(String userId, String adId, int position) {
-            mFavoriteReference = databaseFB.mDatabase.child("userFavorite").child(userId).child(adId);
+            mFavoriteReference = databaseFB.mDatabase.child("userFavorites").child(userId).child(adId);
             mFavoriteReference.keepSynced(true);
             mFavoriteReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override

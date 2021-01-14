@@ -4,5 +4,6 @@
     <color name="colorPrimaryDark">#048d80</color>
     <color name="colorAccent">#FFFFFF</color>
     <color name="colorError">#F44336</color>
+    <color name="colorNotSelected"> #888888</color>
     <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">#fff</color>
 </resources>

@@ -50,10 +50,16 @@ public class MapFragment extends Fragment {
     private static final String SPACE_ID_TWOSIGN = "t5tgnuZA";
     private static final String SPACE_ID_ABRI = "OA2v5p9Z";
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ((MainActivity) getActivity()).loadingDialog.startLoading();
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
         features = new ArrayList<>();
@@ -116,7 +122,6 @@ public class MapFragment extends Fragment {
                     mapView.getCamera().lookAt(
                             new GeoCoordinates(51.44416, 5.4788), distanceInMeters);
 
-
                 } else {
                     Log.d(TAG, "Loading map failed: mapError: " + mapError.name());
                 }
@@ -157,6 +162,7 @@ public class MapFragment extends Fragment {
         bundle.putString("adId", featureId);
         bundle.putString("adSpaceId", featureSpaceId);
         detailsFragment.setArguments(bundle);
+        ((MainActivity) getActivity()).loadingDialog.startLoading();
         this.getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragment_container, detailsFragment).commit();
     }
 
@@ -193,7 +199,7 @@ public class MapFragment extends Fragment {
     }
 
     private void getFeatures(boolean epEnabled, boolean tsEnabled, boolean aEnabled) {
-        if(mapMarkerPlacer != null){
+        if (mapMarkerPlacer != null) {
             this.features.clear();
             mapMarkerPlacer.removeMapMarkers();
         }
@@ -228,7 +234,7 @@ public class MapFragment extends Fragment {
                     features.addAll(collectedFeatures);
                 }
                 mapMarkerPlacer.placeMapMarkers(collectedFeatures);
-
+                ((MainActivity) getActivity()).loadingDialog.stopLoading();
 
             }
 

@@ -4,19 +4,17 @@ public class FavItemViewModel {
 
 
     private String spaceId;
-    private String adId;
     private String adName;
-    private boolean status;
+    private String adId;
 
-    public FavItemViewModel(){
+    public FavItemViewModel() {
 
     }
 
-    public FavItemViewModel(String adId){
-        this.adId = adId;
+    public FavItemViewModel(String adName, String spaceId) {
+        this.adName = adName;
+        this.spaceId = spaceId;
     }
-
-
 
     public String getAdId() {
         return adId;
@@ -32,10 +30,6 @@ public class FavItemViewModel {
 
     public String getAdName() {
         return adName;
-    }
-
-    public boolean getStatus() {
-        return status;
     }
 
     public String getSpaceId() {

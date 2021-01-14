@@ -18,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.here.adly.R;
 import com.here.adly.adapters.ReviewsAdapter;
+import com.here.adly.ui.activities.MainActivity;
 import com.here.adly.viewmodels.FavItemViewModel;
 import com.here.adly.viewmodels.ReviewItemViewModel;
 
@@ -77,9 +78,6 @@ public class ReviewsFragment extends Fragment {
 
     private void getReviewsList() {
         FirebaseRecyclerOptions<ReviewItemViewModel> options = new FirebaseRecyclerOptions.Builder<ReviewItemViewModel>().setQuery(mReviewsReference, ReviewItemViewModel.class).build();
-        for (ReviewItemViewModel item : options.getSnapshots()) {
-            System.out.println(item.toString());
-        }
         reviewsAdapter = new ReviewsAdapter(options);
         recyclerView.setAdapter(reviewsAdapter);
     }
@@ -119,6 +117,7 @@ public class ReviewsFragment extends Fragment {
                 tvAverageScore.setText(reviewScoreResult);
                 String amountReviewers = "based on " + reviewCount + " reviews";
                 tvAmountReviewers.setText(amountReviewers);
+
             }
 
             @Override
@@ -126,6 +125,7 @@ public class ReviewsFragment extends Fragment {
                 System.out.println("Fout");
             }
         });
+        ((MainActivity) getActivity()).loadingDialog.stopLoading();
     }
 
     @Override
