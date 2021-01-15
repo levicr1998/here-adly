@@ -6,12 +6,12 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class FeatureLocationCollectionManager {
+public class ClientHERE {
 
     private static Retrofit retrofit;
     private static final String BASE_URL = "https://xyz.api.here.com/hub/";
 
-    public FeatureLocationCollectionManager() {
+    public ClientHERE() {
     }
 
 

@@ -1,6 +1,7 @@
 package com.here.adly.adapters;
 
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.here.adly.R;
 import com.here.adly.db.DatabaseFB;
+import com.here.adly.ui.activities.MainActivity;
 import com.here.adly.ui.fragments.DetailsFragment;
 import com.here.adly.viewmodels.FavItemViewModel;
 
@@ -32,9 +34,11 @@ import androidx.recyclerview.widget.RecyclerView;
 public class FavoritesAdapter extends FirebaseRecyclerAdapter<FavItemViewModel, FavoritesAdapter.ViewHolder> {
     private List<FavItemViewModel> favoriteViewModelList = new ArrayList<>();
     private DatabaseReference mFavoriteReference;
+    private Activity activity;
 
-    public FavoritesAdapter(@NonNull FirebaseRecyclerOptions<FavItemViewModel> options) {
+    public FavoritesAdapter(@NonNull FirebaseRecyclerOptions<FavItemViewModel> options, Activity activity) {
         super(options);
+        this.activity = activity;
     }
 
     @Override
@@ -81,7 +85,7 @@ public class FavoritesAdapter extends FirebaseRecyclerAdapter<FavItemViewModel, 
             cvItemCard.setOnClickListener(view -> {
                 int position = getAdapterPosition();
                 final FavItemViewModel favItem = favoriteViewModelList.get(position);
-                startFavoritesFragment(favItem.getAdName(), favItem.getAdId());
+                startFavoritesFragment(favItem.getSpaceId(), favItem.getAdId());
             });
 
         }
@@ -105,16 +109,16 @@ public class FavoritesAdapter extends FirebaseRecyclerAdapter<FavItemViewModel, 
             });
         }
 
-        private void startFavoritesFragment(String featureName, String featureId) {
+        private void startFavoritesFragment(String spaceId, String featureId) {
 
 
             Bundle bundle = new Bundle();
-            bundle.putString("adName", featureName);
+            bundle.putString("adSpaceId", spaceId);
             bundle.putString("adId", featureId);
             DetailsFragment detailsFragment = new DetailsFragment();
             AppCompatActivity mainActivity = (AppCompatActivity) itemView.getContext();
             detailsFragment.setArguments(bundle);
-
+            ((MainActivity) activity).loadingDialog.startLoading();
             mainActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, detailsFragment).commit();
         }
 

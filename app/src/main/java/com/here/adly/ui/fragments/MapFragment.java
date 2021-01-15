@@ -16,7 +16,7 @@ import com.here.adly.models.FeatureCollection;
 import com.here.adly.utils.MapMarkerPlacer;
 import com.here.adly.utils.PermissionsRequestor;
 import com.here.adly.webservices.APIServiceHERE;
-import com.here.adly.webservices.FeatureLocationCollectionManager;
+import com.here.adly.webservices.ClientHERE;
 import com.here.sdk.core.GeoCoordinates;
 import com.here.sdk.core.Point2D;
 import com.here.sdk.gestures.TapListener;
@@ -41,7 +41,7 @@ public class MapFragment extends Fragment {
     private static final String TAG = MainActivity.class.getSimpleName();
     private PermissionsRequestor permissionsRequestor;
     private APIServiceHERE apiServiceHERE;
-    private FeatureLocationCollectionManager featureLocationCollectionManager;
+    private ClientHERE clientHERE;
     private MapMarkerPlacer mapMarkerPlacer;
     private MapView mapView;
     private List<Feature> features;
@@ -66,7 +66,7 @@ public class MapFragment extends Fragment {
         // Get a MapView instance from the layout.
         mapView = view.findViewById(R.id.map_view);
         mapView.onCreate(savedInstanceState);
-        featureLocationCollectionManager = new FeatureLocationCollectionManager();
+        clientHERE = new ClientHERE();
 
         if (!FilterPreferences.filters.isEmpty()) {
             getFilteredFeatures();
@@ -203,7 +203,7 @@ public class MapFragment extends Fragment {
             this.features.clear();
             mapMarkerPlacer.removeMapMarkers();
         }
-        apiServiceHERE = featureLocationCollectionManager.setupClient();
+        apiServiceHERE = clientHERE.setupClient();
         if (epEnabled) {
             Call<FeatureCollection> callEuropanel = apiServiceHERE.getFeatures(SPACE_ID_EUROPANEL);
             executeGetFeatures(callEuropanel, SPACE_ID_EUROPANEL);

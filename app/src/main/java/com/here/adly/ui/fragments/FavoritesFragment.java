@@ -11,6 +11,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.here.adly.R;
 import com.here.adly.adapters.FavoritesAdapter;
+import com.here.adly.models.Feature;
 import com.here.adly.ui.activities.MainActivity;
 import com.here.adly.utils.MapMarkerPlacer;
 import com.here.adly.viewmodels.FavItemViewModel;
@@ -46,11 +47,11 @@ public class FavoritesFragment extends Fragment {
         setUpRecyclerView(recyclerViewTwoSign);
 
 
-        favoritesAdapterEuropanel = new FavoritesAdapter(getOptionsAdapter(mAuth.getUid(), MapMarkerPlacer.SPACE_NAME_EUROPANEL));
+        favoritesAdapterEuropanel = new FavoritesAdapter(getOptionsAdapter(mAuth.getUid(), Feature.SPACE_NAME_EUROPANEL),getActivity());
         recyclerViewEuropanel.setAdapter(favoritesAdapterEuropanel);
-        favoritesAdapterAbri = new FavoritesAdapter(getOptionsAdapter(mAuth.getUid(), MapMarkerPlacer.SPACE_NAME_ABRI));
+        favoritesAdapterAbri = new FavoritesAdapter(getOptionsAdapter(mAuth.getUid(), Feature.SPACE_NAME_ABRI),getActivity());
         recyclerViewAbri.setAdapter(favoritesAdapterAbri);
-        favoritesAdapterTwoSign = new FavoritesAdapter(getOptionsAdapter(mAuth.getUid(), MapMarkerPlacer.SPACE_NAME_TWOSIGN));
+        favoritesAdapterTwoSign = new FavoritesAdapter(getOptionsAdapter(mAuth.getUid(), Feature.SPACE_NAME_TWOSIGN),getActivity());
         recyclerViewTwoSign.setAdapter(favoritesAdapterTwoSign);
 
 

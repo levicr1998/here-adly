@@ -19,6 +19,10 @@ public class Feature {
 
     private String spaceId;
 
+    public static final String SPACE_NAME_EUROPANEL = "bXsuXVfP";
+    public static final String SPACE_NAME_TWOSIGN = "t5tgnuZA";
+    public static final String SPACE_NAME_ABRI = "OA2v5p9Z";
+
     public String getSpaceId() {
         return spaceId;
     }

@@ -20,9 +20,6 @@ public class MapMarkerPlacer {
     private final List<MapMarker> mapMarkers = new ArrayList<>();
     private Context context;
     private MapView mapView;
-    public static final String SPACE_NAME_EUROPANEL = "bXsuXVfP";
-    public static final String SPACE_NAME_TWOSIGN = "t5tgnuZA";
-    public static final String SPACE_NAME_ABRI = "OA2v5p9Z";
 
     public MapMarkerPlacer(Context context, MapView mapView) {
         this.context = context;
@@ -53,13 +50,13 @@ public class MapMarkerPlacer {
     public MapImage chooseAdPicture(String spaceName) {
         MapImage mapImage = MapImageFactory.fromResource(context.getResources(), R.drawable.location_spot_europanel);
         switch (spaceName) {
-            case SPACE_NAME_EUROPANEL:
+            case Feature.SPACE_NAME_EUROPANEL:
                 mapImage = MapImageFactory.fromResource(context.getResources(), R.drawable.location_spot_europanel);
                 break;
-            case SPACE_NAME_TWOSIGN:
+            case Feature.SPACE_NAME_TWOSIGN:
                 mapImage = MapImageFactory.fromResource(context.getResources(), R.drawable.location_spot_twosign);
                 break;
-            case SPACE_NAME_ABRI:
+            case Feature.SPACE_NAME_ABRI:
                 mapImage = MapImageFactory.fromResource(context.getResources(), R.drawable.location_spot_abri);
                 break;
 

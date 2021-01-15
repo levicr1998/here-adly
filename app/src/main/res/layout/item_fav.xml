@@ -35,7 +35,7 @@
             android:layout_weight="0.05"
             android:layout_margin="10dp"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/ic_favorite_red" />
+            android:background="@drawable/ic_favorite" />
 </LinearLayout>
 
 
