@@ -114,17 +114,14 @@ public class MapFragment extends Fragment {
     private void loadMapScene() {
         // Load a scene from the HERE SDK to render the map with a map scheme.
         mapMarkerPlacer = new MapMarkerPlacer(getActivity(), mapView);
-        mapView.getMapScene().loadScene(MapScheme.NORMAL_DAY, new MapScene.LoadSceneCallback() {
-            @Override
-            public void onLoadScene(@Nullable MapError mapError) {
-                if (mapError == null) {
-                    double distanceInMeters = 1000 * 4;
-                    mapView.getCamera().lookAt(
-                            new GeoCoordinates(51.44416, 5.4788), distanceInMeters);
+        mapView.getMapScene().loadScene(MapScheme.NORMAL_DAY, mapError -> {
+            if (mapError == null) {
+                double distanceInMeters = 1000 * 4;
+                mapView.getCamera().lookAt(
+                        new GeoCoordinates(51.44416, 5.4788), distanceInMeters);
 
-                } else {
-                    Log.d(TAG, "Loading map failed: mapError: " + mapError.name());
-                }
+            } else {
+                Log.d(TAG, "Loading map failed: mapError: " + mapError.name());
             }
         });
 
@@ -132,12 +129,7 @@ public class MapFragment extends Fragment {
 
 
     private void setTapGestureHandler() {
-        mapView.getGestures().setTapListener(new TapListener() {
-            @Override
-            public void onTap(Point2D touchPoint) {
-                pickMapMarker(touchPoint);
-            }
-        });
+        mapView.getGestures().setTapListener(touchPoint -> pickMapMarker(touchPoint));
     }
 
     private void pickMapMarker(final Point2D touchPoint) {
@@ -147,6 +139,7 @@ public class MapFragment extends Fragment {
             if (mapMarkerList.size() == 0) {
                 return;
             }
+            ((MainActivity) getActivity()).loadingDialog.startLoading();
             MapMarker topmostMapMarker = mapMarkerList.get(0);
             Feature matchedFeature = getFeatureFromCoordinates(topmostMapMarker);
             startDetailsFragment(matchedFeature.getProperties().getName(), matchedFeature.getId(), matchedFeature.getSpaceId());
@@ -162,7 +155,6 @@ public class MapFragment extends Fragment {
         bundle.putString("adId", featureId);
         bundle.putString("adSpaceId", featureSpaceId);
         detailsFragment.setArguments(bundle);
-        ((MainActivity) getActivity()).loadingDialog.startLoading();
         this.getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragment_container, detailsFragment).commit();
     }
 

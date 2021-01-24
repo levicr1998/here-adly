@@ -233,7 +233,6 @@ public class DetailsFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 dataSnapshot.getRef().removeValue();
                 setStatusButtonColor(false);
-                ((MainActivity) getActivity()).loadingDialog.stopLoading();
             }
 
             @Override
@@ -285,7 +284,6 @@ public class DetailsFragment extends Fragment {
                 System.out.println("Fout");
             }
         });
-        ((MainActivity) getActivity()).loadingDialog.stopLoading();
     }
 
 }

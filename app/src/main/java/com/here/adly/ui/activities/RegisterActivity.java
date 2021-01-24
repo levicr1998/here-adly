@@ -37,6 +37,7 @@ public class RegisterActivity extends AppCompatActivity {
     private Button btnRegister;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

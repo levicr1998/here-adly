@@ -1,12 +1,8 @@
-The HelloMap example app shows how the HERE SDK can be integrated into your project and how to display a map.
+The Adly app is an assignment of HERE technologies made by a student team. 
+The app shows how the HERE SDK and C&C tool can be used inside an Android app
+to show an overview of location attributes. 
 
-Build instructions:
--------------------
-
-1) Copy the AAR file of the HERE SDK for Android to your app's `app/libs` folder.
-
-Note: If your AAR version is different than the version shown in the _Developer's Guide_, you may need to adapt the source code of the example app.
-
-2) Open Android Studio and sync the project.
-
-Please do not forget: To run the app, you need to add your HERE SDK credentials to the `AndroidManifest.xml` file. More information can be found in the _Get Started_ section of the _Developer's Guide_.
+Project description:
+Adly positions itself as the One-Stop Service Application for people that would like to advertise in their desired location.
+Adly offers a range of advertisement objects including: Europanels, 2-Signs and Abri’s.
+Explore our service and start advertising today!
