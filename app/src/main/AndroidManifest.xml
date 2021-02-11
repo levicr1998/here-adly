@@ -38,10 +38,10 @@
 
         <meta-data
             android:name="com.here.sdk.access_key_secret"
-            android:value="*" />
+            android:value="LoHc91DuOrc8AgeEQt4WZKAb4gpIOvXEy8wNE1RgP-dYYgedM_oWr2bs0I_GPuaroROgqSFKsUwIkNKXaH7wEA" />
         <meta-data
             android:name="com.here.sdk.access_key_id"
-            android:value="*" />
+            android:value="J29J8Q0uoD-k7MU2apR97w" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
